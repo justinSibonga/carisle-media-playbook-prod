@@ -358,58 +358,76 @@ export function Sidebar() {
               isCollapsed && "px-2"
             )}>
               <div className={cn(
-                "flex flex-row items-center gap-3 mb-3",
-                isCollapsed && "justify-center"
+                "flex items-center gap-3",
+                isCollapsed ? "justify-center" : "mb-3"
               )}>
                 {session.user.image ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={session.user.image}
                     alt={session.user.name || "User"}
-                    className="w-9 h-9 rounded-full shrink-0 object-cover"
+                    className="w-10 h-10 rounded-full shrink-0 object-cover ring-2 ring-border"
                     referrerPolicy="no-referrer"
                   />
                 ) : (
-                  <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center shrink-0">
-                    <span className="text-sm font-semibold text-muted-foreground">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 ring-2 ring-border">
+                    <span className="text-sm font-semibold text-primary">
                       {session.user.name?.[0]?.toUpperCase() || session.user.email?.[0]?.toUpperCase() || "U"}
                     </span>
                   </div>
                 )}
                 {!isCollapsed && (
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-foreground truncate">
+                  <div className="min-w-0 flex-1 overflow-hidden">
+                    <p className="text-sm font-semibold text-foreground truncate leading-tight">
                       {session.user.name || "User"}
                     </p>
-                    <p className="text-xs text-muted-foreground truncate">
+                    <p className="text-xs text-muted-foreground truncate leading-tight mt-0.5">
                       {session.user.email}
                     </p>
                   </div>
                 )}
               </div>
-              <button
-                onClick={() => setIsLogoutOpen(true)}
-                className={cn(
-                  "w-full flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors",
-                  isCollapsed && "p-2"
-                )}
-                title={isCollapsed ? "Sign out" : undefined}
-              >
-                <svg
-                  className="w-4 h-4"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+              {!isCollapsed ? (
+                <button
+                  onClick={() => setIsLogoutOpen(true)}
+                  className="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-medium text-destructive/80 hover:text-destructive bg-destructive/5 hover:bg-destructive/10 border border-destructive/20 hover:border-destructive/30 rounded-lg transition-all duration-200"
                 >
-                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                  <polyline points="16 17 21 12 16 7" />
-                  <line x1="21" y1="12" x2="9" y2="12" />
-                </svg>
-                {!isCollapsed && "Sign out"}
-              </button>
+                  <svg
+                    className="w-4 h-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                  </svg>
+                  Sign out
+                </button>
+              ) : (
+                <button
+                  onClick={() => setIsLogoutOpen(true)}
+                  className="mt-3 w-10 h-10 flex items-center justify-center text-destructive/80 hover:text-destructive bg-destructive/5 hover:bg-destructive/10 border border-destructive/20 hover:border-destructive/30 rounded-lg transition-all duration-200"
+                  title="Sign out"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                  </svg>
+                </button>
+              )}
             </div>
           )}
         </div>
