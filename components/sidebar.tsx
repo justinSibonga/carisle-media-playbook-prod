@@ -358,7 +358,7 @@ export function Sidebar() {
               isCollapsed && "px-2"
             )}>
               <div className={cn(
-                "flex items-center gap-3",
+                "flex flex-row items-center gap-3",
                 isCollapsed ? "justify-center" : "mb-3"
               )}>
                 {session.user.image ? (
@@ -366,22 +366,22 @@ export function Sidebar() {
                   <img
                     src={session.user.image}
                     alt={session.user.name || "User"}
-                    className="w-10 h-10 rounded-full shrink-0 object-cover ring-2 ring-border"
+                    className="w-10 h-10 rounded-full flex-shrink-0 object-cover ring-2 ring-border"
                     referrerPolicy="no-referrer"
                   />
                 ) : (
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 ring-2 ring-border">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 ring-2 ring-border">
                     <span className="text-sm font-semibold text-primary">
                       {session.user.name?.[0]?.toUpperCase() || session.user.email?.[0]?.toUpperCase() || "U"}
                     </span>
                   </div>
                 )}
                 {!isCollapsed && (
-                  <div className="min-w-0 flex-1 overflow-hidden">
-                    <p className="text-sm font-semibold text-foreground truncate leading-tight">
+                  <div className="flex flex-col min-w-0 flex-1">
+                    <p className="text-sm font-semibold text-foreground truncate">
                       {session.user.name || "User"}
                     </p>
-                    <p className="text-xs text-muted-foreground truncate leading-tight mt-0.5">
+                    <p className="text-xs text-muted-foreground truncate">
                       {session.user.email}
                     </p>
                   </div>
