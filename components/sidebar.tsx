@@ -6,11 +6,134 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Menu01Icon, Cancel01Icon, ArrowRight01Icon, Search01Icon } from "@hugeicons/core-free-icons";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import { NAV_SECTIONS, EXPANDABLE_SECTIONS } from "@/lib/navigation";
 import { SearchDialog } from "@/components/search-dialog";
+
+// User Menu Component
+function UserMenu({ 
+  session, 
+  isCollapsed,
+  onSignOut 
+}: { 
+  session: { user?: { name?: string | null; email?: string | null; image?: string | null } };
+  isCollapsed: boolean;
+  onSignOut: () => void;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const user = session.user;
+  if (!user) return null;
+
+  const initials = user.name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase() || "U";
+
+  return (
+    <div ref={menuRef} className="relative">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={cn(
+          "w-full flex items-center gap-3 p-2 rounded-lg transition-all duration-200 hover:bg-muted group",
+          isCollapsed && "justify-center"
+        )}
+        title={isCollapsed ? user.name || user.email || "User" : undefined}
+      >
+        {user.image ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={user.image}
+            alt={user.name || "User"}
+            className="w-9 h-9 rounded-full object-cover ring-2 ring-border group-hover:ring-primary/30 transition-all"
+            referrerPolicy="no-referrer"
+          />
+        ) : (
+          <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center ring-2 ring-border group-hover:ring-primary/30 transition-all">
+            <span className="text-sm font-semibold text-primary">{initials}</span>
+          </div>
+        )}
+        {!isCollapsed && (
+          <>
+            <div className="flex-1 min-w-0 text-left">
+              <p className="text-sm font-medium text-foreground truncate">{user.name || "User"}</p>
+              <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+            </div>
+            <svg
+              className={cn(
+                "w-4 h-4 text-muted-foreground transition-transform duration-200",
+                isOpen && "rotate-180"
+              )}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </>
+        )}
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.96 }}
+            transition={{ duration: 0.15 }}
+            className={cn(
+              "absolute bottom-full mb-2 bg-card border border-border rounded-lg shadow-lg overflow-hidden z-50",
+              isCollapsed ? "left-0 w-48" : "left-0 right-0"
+            )}
+          >
+            {isCollapsed && (
+              <div className="px-3 py-2 border-b border-border">
+                <p className="text-sm font-medium text-foreground truncate">{user.name || "User"}</p>
+                <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+              </div>
+            )}
+            <button
+              onClick={() => {
+                setIsOpen(false);
+                onSignOut();
+              }}
+              className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-destructive hover:bg-destructive/10 transition-colors"
+            >
+              <svg
+                className="w-4 h-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg>
+              Sign out
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 // Logout Confirmation Dialog
 function LogoutDialog({ 
@@ -351,83 +474,17 @@ export function Sidebar() {
             </nav>
           </div>
 
-          {/* User Info & Sign Out */}
+          {/* User Menu */}
           {session?.user && (
             <div className={cn(
-              "border-t border-border p-4 transition-all duration-300",
+              "border-t border-border p-3 transition-all duration-300",
               isCollapsed && "px-2"
             )}>
-              <div className={cn(
-                "flex flex-row items-center gap-3",
-                isCollapsed ? "justify-center" : "mb-3"
-              )}>
-                {session.user.image ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={session.user.image}
-                    alt={session.user.name || "User"}
-                    className="w-10 h-10 rounded-full flex-shrink-0 object-cover ring-2 ring-border"
-                    referrerPolicy="no-referrer"
-                  />
-                ) : (
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 ring-2 ring-border">
-                    <span className="text-sm font-semibold text-primary">
-                      {session.user.name?.[0]?.toUpperCase() || session.user.email?.[0]?.toUpperCase() || "U"}
-                    </span>
-                  </div>
-                )}
-                {!isCollapsed && (
-                  <div className="flex flex-col min-w-0 flex-1">
-                    <p className="text-sm font-semibold text-foreground truncate">
-                      {session.user.name || "User"}
-                    </p>
-                    <p className="text-xs text-muted-foreground truncate">
-                      {session.user.email}
-                    </p>
-                  </div>
-                )}
-              </div>
-              {!isCollapsed ? (
-                <button
-                  onClick={() => setIsLogoutOpen(true)}
-                  className="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-medium text-destructive/80 hover:text-destructive bg-destructive/5 hover:bg-destructive/10 border border-destructive/20 hover:border-destructive/30 rounded-lg transition-all duration-200"
-                >
-                  <svg
-                    className="w-4 h-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                    <polyline points="16 17 21 12 16 7" />
-                    <line x1="21" y1="12" x2="9" y2="12" />
-                  </svg>
-                  Sign out
-                </button>
-              ) : (
-                <button
-                  onClick={() => setIsLogoutOpen(true)}
-                  className="mt-3 w-10 h-10 flex items-center justify-center text-destructive/80 hover:text-destructive bg-destructive/5 hover:bg-destructive/10 border border-destructive/20 hover:border-destructive/30 rounded-lg transition-all duration-200"
-                  title="Sign out"
-                >
-                  <svg
-                    className="w-4 h-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                    <polyline points="16 17 21 12 16 7" />
-                    <line x1="21" y1="12" x2="9" y2="12" />
-                  </svg>
-                </button>
-              )}
+              <UserMenu 
+                session={session} 
+                isCollapsed={isCollapsed} 
+                onSignOut={() => setIsLogoutOpen(true)} 
+              />
             </div>
           )}
         </div>
