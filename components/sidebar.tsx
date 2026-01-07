@@ -45,10 +45,15 @@ function UserMenu({
     <div ref={menuRef} className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={cn(
-          "w-full rounded-lg transition-all duration-200 hover:bg-muted group",
-          isCollapsed ? "flex justify-center p-2" : "grid grid-cols-[36px_1fr_16px] items-center gap-3 p-2"
-        )}
+        className="w-full rounded-lg transition-all duration-200 hover:bg-muted group"
+        style={{ 
+          display: isCollapsed ? 'flex' : 'grid',
+          gridTemplateColumns: isCollapsed ? undefined : '40px 1fr 20px',
+          alignItems: 'center',
+          gap: '12px',
+          padding: '8px',
+          justifyContent: isCollapsed ? 'center' : undefined
+        }}
         title={isCollapsed ? user.name || user.email || "User" : undefined}
       >
         {user.image ? (
@@ -56,25 +61,34 @@ function UserMenu({
           <img
             src={user.image}
             alt={user.name || "User"}
-            className="w-9 h-9 rounded-full object-cover ring-2 ring-border group-hover:ring-primary/30 transition-all"
+            style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover' }}
+            className="ring-2 ring-border group-hover:ring-primary/30 transition-all"
             referrerPolicy="no-referrer"
           />
         ) : (
-          <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center ring-2 ring-border group-hover:ring-primary/30 transition-all">
+          <div 
+            style={{ width: '40px', height: '40px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            className="bg-primary/10 ring-2 ring-border group-hover:ring-primary/30 transition-all"
+          >
             <span className="text-sm font-semibold text-primary">{initials}</span>
           </div>
         )}
         {!isCollapsed && (
           <>
-            <div className="min-w-0 text-left overflow-hidden">
-              <p className="text-sm font-medium text-foreground truncate">{user.name || "User"}</p>
-              <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+            <div style={{ minWidth: 0, textAlign: 'left', overflow: 'hidden' }}>
+              <p style={{ margin: 0, fontSize: '14px', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} className="text-foreground">
+                {user.name || "User"}
+              </p>
+              <p style={{ margin: 0, fontSize: '12px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} className="text-muted-foreground">
+                {user.email}
+              </p>
             </div>
             <svg
               className={cn(
-                "w-4 h-4 text-muted-foreground transition-transform duration-200 flex-shrink-0",
+                "text-muted-foreground transition-transform duration-200",
                 isOpen && "rotate-180"
               )}
+              style={{ width: '16px', height: '16px', flexShrink: 0 }}
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
