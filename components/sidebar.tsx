@@ -358,7 +358,7 @@ export function Sidebar() {
               isCollapsed && "px-2"
             )}>
               <div className={cn(
-                "flex items-center gap-3",
+                "flex items-center gap-3 mb-3",
                 isCollapsed && "justify-center"
               )}>
                 {session.user.image ? (
@@ -368,22 +368,22 @@ export function Sidebar() {
                     alt={session.user.name || "User"}
                     width={36}
                     height={36}
-                    className="rounded-full shrink-0 object-cover"
+                    className="w-9 h-9 rounded-full shrink-0 object-cover"
                     referrerPolicy="no-referrer"
                   />
                 ) : (
-                  <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                    <span className="text-sm font-medium text-primary">
-                      {session.user.name?.[0] || session.user.email?.[0] || "U"}
+                  <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center shrink-0">
+                    <span className="text-sm font-semibold text-muted-foreground">
+                      {session.user.name?.[0]?.toUpperCase() || session.user.email?.[0]?.toUpperCase() || "U"}
                     </span>
                   </div>
                 )}
                 {!isCollapsed && (
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-foreground truncate">
+                    <p className="text-sm font-medium text-foreground truncate leading-tight">
                       {session.user.name || "User"}
                     </p>
-                    <p className="text-xs text-muted-foreground truncate">
+                    <p className="text-xs text-muted-foreground truncate leading-tight mt-0.5">
                       {session.user.email}
                     </p>
                   </div>
@@ -392,8 +392,8 @@ export function Sidebar() {
               <button
                 onClick={() => setIsLogoutOpen(true)}
                 className={cn(
-                  "mt-3 w-full flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors border",
-                  "text-destructive/80 border-destructive/20 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30",
+                  "w-full flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors",
+                  "text-muted-foreground hover:text-destructive hover:bg-destructive/10",
                   isCollapsed && "p-2"
                 )}
                 title={isCollapsed ? "Sign out" : undefined}
