@@ -1,9 +1,7 @@
 import { auth } from "@/lib/auth";
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 
-export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+export default auth((req) => {
+  const { pathname } = req.nextUrl;
   
   // Allow public routes (root login page and auth API)
   const publicPaths = ["/", "/api/auth"];
@@ -12,21 +10,16 @@ export async function middleware(request: NextRequest) {
   );
   
   if (isPublicPath) {
-    return NextResponse.next();
+    return;
   }
-  
-  // Check authentication
-  const session = await auth();
   
   // Redirect to login (root) if not authenticated
-  if (!session) {
-    const loginUrl = new URL("/", request.url);
+  if (!req.auth) {
+    const loginUrl = new URL("/", req.url);
     loginUrl.searchParams.set("callbackUrl", pathname);
-    return NextResponse.redirect(loginUrl);
+    return Response.redirect(loginUrl);
   }
-  
-  return NextResponse.next();
-}
+});
 
 export const config = {
   matcher: [
