@@ -1,0 +1,568 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    /* Original Color Palette Restored */
+    --background: 210 20% 98%;
+    --foreground: 220 10% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 10% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 10% 15%;
+
+    --primary: 192 60% 25%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 192 50% 92%;
+
+    --secondary: 210 20% 96%;
+    --secondary-foreground: 220 10% 15%;
+
+    --muted: 210 20% 96%;
+    --muted-foreground: 220 10% 40%;
+
+    --accent: 34 94% 54%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 210 20% 90%;
+    --input: 210 20% 90%;
+    --ring: 220 10% 15%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 220 10% 15%;
+    --sidebar-primary: 34 94% 54%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 192 60% 25%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 210 20% 90%;
+    --sidebar-ring: 34 94% 54%;
+
+    --connector: 210 20% 90%;
+
+    /* Rating Scale Colors (Interview Scorecards) */
+    --rating-1: 315 32% 35%; /* Poor - Dark Purple */
+    --rating-2: 300 30% 70%; /* Below - Light Purple */
+    --rating-3: 45 100% 70%; /* Meets - Yellow */
+    --rating-4: 207 62% 76%; /* Exceeds - Light Blue */
+    --rating-5: 95 40% 63%; /* Exceptional - Green */
+    --rating-text-dark: 315 32% 35%; /* Dark text for light backgrounds */
+
+    /* RACI Chart Indicator Colors */
+    --raci-responsible: 142 71% 45%; /* Green - R */
+    --raci-accountable: 217 91% 60%; /* Blue - A */
+    --raci-consulted: 48 96% 53%; /* Yellow - C */
+    --raci-informed: 215 14% 50%; /* Gray - I */
+
+    /* Core Values Brand Colors */
+    --value-integrity: 175 55% 23%; /* Teal - Keep It Real */
+    --value-connection: 285 35% 37%; /* Purple - Focus on Meaningful Connections */
+    --value-clarity: 24 76% 52%; /* Orange - Get Straight to the Point */
+
+    /* Status Indicator Colors */
+    --status-success: 142 71% 40%; /* Green - positive/done */
+    --status-success-bg: 142 76% 95%; /* Light green background */
+    --status-warning: 45 93% 47%; /* Yellow - caution */
+    --status-warning-bg: 48 96% 95%; /* Light yellow background */
+    --status-caution: 25 95% 53%; /* Orange - attention */
+    --status-caution-bg: 33 100% 95%; /* Light orange background */
+    --status-danger: 0 84% 60%; /* Red - critical */
+    --status-danger-bg: 0 86% 95%; /* Light red background */
+    --status-danger-bg-dark: 0 74% 85%; /* Darker red background */
+    --status-info: 217 91% 60%; /* Blue - informational */
+
+    --handbook-nav: 192 30% 40%;
+    --handbook-nav-hover: 192 60% 25%;
+    --handbook-nav-active: 192 60% 25%;
+
+    /* Typography Scale - Optimized for Readability */
+    --font-size-xs: 0.75rem; /* 12px */
+    --font-size-sm: 0.875rem; /* 14px */
+    --font-size-base: 1rem; /* 16px - standard readable size */
+    --font-size-lg: 1.125rem; /* 18px */
+    --font-size-xl: 1.25rem; /* 20px */
+    --font-size-2xl: 1.5rem; /* 24px */
+    --font-size-3xl: 1.875rem; /* 30px */
+    --font-size-4xl: 2.25rem; /* 36px */
+    --leading-normal: 1.5;
+    --leading-relaxed: 1.625;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply scroll-smooth antialiased;
+    font-size: 16px; /* Lock base to 16px for consistency */
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-family: "DM Sans", var(--font-dm-sans), system-ui, sans-serif;
+    font-size: var(--font-size-base);
+    font-weight: 400;
+    line-height: var(--leading-relaxed);
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold tracking-tight text-foreground/90;
+    font-family: var(--font-inter), "Inter", system-ui, sans-serif;
+  }
+
+  h1 {
+    font-size: var(--font-size-3xl);
+    line-height: 1.2;
+  }
+  h2 {
+    font-size: var(--font-size-2xl);
+    line-height: 1.25;
+  }
+  h3 {
+    font-size: var(--font-size-xl);
+    line-height: 1.35;
+  }
+  h4 {
+    font-size: var(--font-size-lg);
+    line-height: 1.4;
+  }
+  p {
+    margin-bottom: 1.25rem;
+  }
+}
+
+@theme {
+  --font-inter: "Inter", sans-serif;
+  --font-dm-sans: "DM Sans", sans-serif;
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-upload: hsl(var(--upload));
+  --color-upload-foreground: hsl(var(--upload-foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-sidebar: hsl(var(--sidebar-background));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --color-connector: hsl(var(--connector));
+
+  /* Rating Scale Colors */
+  --color-rating-1: hsl(var(--rating-1));
+  --color-rating-2: hsl(var(--rating-2));
+  --color-rating-3: hsl(var(--rating-3));
+  --color-rating-4: hsl(var(--rating-4));
+  --color-rating-5: hsl(var(--rating-5));
+  --color-rating-text-dark: hsl(var(--rating-text-dark));
+
+  /* RACI Chart Colors */
+  --color-raci-responsible: hsl(var(--raci-responsible));
+  --color-raci-accountable: hsl(var(--raci-accountable));
+  --color-raci-consulted: hsl(var(--raci-consulted));
+  --color-raci-informed: hsl(var(--raci-informed));
+
+  /* Core Values Brand Colors */
+  --color-value-integrity: hsl(var(--value-integrity));
+  --color-value-connection: hsl(var(--value-connection));
+  --color-value-clarity: hsl(var(--value-clarity));
+
+  /* Status Indicator Colors */
+  --color-status-success: hsl(var(--status-success));
+  --color-status-success-bg: hsl(var(--status-success-bg));
+  --color-status-warning: hsl(var(--status-warning));
+  --color-status-warning-bg: hsl(var(--status-warning-bg));
+  --color-status-caution: hsl(var(--status-caution));
+  --color-status-caution-bg: hsl(var(--status-caution-bg));
+  --color-status-danger: hsl(var(--status-danger));
+  --color-status-danger-bg: hsl(var(--status-danger-bg));
+  --color-status-danger-bg-dark: hsl(var(--status-danger-bg-dark));
+  --color-status-info: hsl(var(--status-info));
+
+  --color-handbook-nav: hsl(var(--handbook-nav));
+  --color-handbook-nav-hover: hsl(var(--handbook-nav-hover));
+  --color-handbook-nav-active: hsl(var(--handbook-nav-active));
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-fade-in: fade-in 0.5s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@layer utilities {
+  /* Premium Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(210 20% 96%);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: hsl(210 10% 70%);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(210 10% 55%);
+  }
+
+  /* Hide Scrollbar Utility - Force Override */
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    -webkit-appearance: none !important;
+    background: transparent !important;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+    overflow: -moz-scrollbars-none !important;
+  }
+
+  /* Handbook Typography - Optimized for readability */
+  .prose-handbook {
+    @apply max-w-none;
+  }
+
+  /* Override text-primary on headings to use dark color */
+  h1.text-primary,
+  h2.text-primary,
+  h3.text-primary,
+  h4.text-primary,
+  h5.text-primary,
+  h6.text-primary {
+    color: hsl(var(--foreground)) !important;
+  }
+
+  /* Section Label - Ensure accent color is always applied */
+  .prose-handbook .section-label,
+  .prose-handbook p.section-label,
+  .section-label {
+    color: hsl(var(--accent)) !important;
+    @apply font-medium tracking-widest uppercase text-sm mb-2;
+  }
+  .prose-handbook h1 {
+    font-size: var(--font-size-3xl);
+    @apply mb-4;
+  }
+  .prose-handbook h2 {
+    font-size: var(--font-size-2xl);
+    @apply mt-8 mb-3 border-b pb-2;
+  }
+  .prose-handbook h3 {
+    font-size: var(--font-size-xl);
+    @apply mt-6 mb-2;
+  }
+  .prose-handbook h4 {
+    font-size: var(--font-size-lg);
+    @apply mt-4 mb-2 font-semibold;
+  }
+  .prose-handbook p {
+    font-family: "DM Sans", var(--font-dm-sans), system-ui, sans-serif;
+    font-size: var(--font-size-base);
+    font-weight: 400;
+    line-height: var(--leading-relaxed);
+    @apply mb-3 text-foreground/80;
+  }
+  .prose-handbook ul {
+    font-family: "DM Sans", var(--font-dm-sans), system-ui, sans-serif;
+    font-size: var(--font-size-base);
+    font-weight: 400;
+    @apply my-2 ml-6 list-disc [&>li]:mt-1 text-foreground/80;
+  }
+  .prose-handbook ol {
+    font-family: "DM Sans", var(--font-dm-sans), system-ui, sans-serif;
+    font-size: var(--font-size-base);
+    font-weight: 400;
+    @apply my-2 ml-6 list-decimal [&>li]:mt-1 text-foreground/80;
+  }
+  .prose-handbook code {
+    @apply relative rounded bg-muted px-[0.4rem] py-[0.2rem] font-mono text-[0.875em];
+  }
+  .prose-handbook strong {
+    @apply font-semibold;
+  }
+
+  /* Semantic Text Colors */
+  .prose-handbook .text-critical,
+  .prose-handbook .text-warning {
+    @apply text-destructive font-semibold;
+  }
+  .prose-handbook .text-success,
+  .prose-handbook .text-milestone {
+    @apply text-primary font-semibold;
+  }
+  .prose-handbook .text-info {
+    @apply text-primary font-medium;
+  }
+  .prose-handbook .text-urgent {
+    @apply text-destructive font-semibold;
+  }
+  .prose-handbook .text-amber {
+    color: hsl(43 96% 56%);
+    @apply font-semibold;
+  }
+
+  /* Table Styles - Standard UI */
+  .prose-handbook table {
+    @apply w-full my-4 rounded-lg overflow-hidden;
+    border: 1px solid hsl(192 50% 70%);
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: var(--font-size-sm);
+    table-layout: fixed;
+  }
+  .prose-handbook thead {
+    background-color: hsl(192 50% 70%);
+    color: hsl(220 10% 15%);
+    border-bottom: 0;
+  }
+  .prose-handbook th {
+    @apply px-4 py-2.5 text-left font-medium font-sans tracking-tight;
+    font-size: var(--font-size-sm);
+    background-color: hsl(192 50% 70%);
+    color: hsl(220 10% 15%);
+    border-bottom: 1px solid hsl(210 20% 85%);
+  }
+  .prose-handbook td {
+    @apply px-4 py-2.5 text-foreground/80 font-sans align-top;
+    font-size: var(--font-size-sm);
+    border-bottom: 1px solid hsl(210 20% 85%) !important;
+  }
+
+  /* Remove border from last row */
+  .prose-handbook tbody tr:last-child td {
+    border-bottom: none !important;
+  }
+
+  /* Semantic Colors */
+  .prose-handbook td.text-critical,
+  .prose-handbook td .text-critical {
+    @apply text-destructive font-semibold;
+  }
+  .prose-handbook td.text-destructive,
+  .prose-handbook td .text-destructive {
+    @apply text-destructive font-semibold;
+  }
+  .prose-handbook td.text-warning,
+  .prose-handbook td .text-warning {
+    @apply text-destructive font-semibold;
+  }
+  .prose-handbook td.text-urgent,
+  .prose-handbook td .text-urgent {
+    @apply text-destructive font-semibold;
+  }
+  .prose-handbook td.text-amber,
+  .prose-handbook td .text-amber {
+    color: hsl(var(--accent));
+    @apply font-semibold;
+  }
+  .prose-handbook td.text-green-600,
+  .prose-handbook td .text-green-600 {
+    color: hsl(var(--primary));
+    @apply font-semibold;
+  }
+
+  /* Zebra Striping - Explicitly visible */
+  .prose-handbook tbody tr:nth-child(even) {
+    @apply bg-black/5;
+  }
+
+  /* Disable hover effect on table rows */
+  .prose-handbook tbody tr:hover {
+    background-color: inherit;
+  }
+  .prose-handbook tbody tr:nth-child(even):hover {
+    @apply bg-black/5;
+  }
+
+  /* KPI Table Style - Proper column widths */
+  .prose-handbook table.table-kpi,
+  .prose-handbook .table-kpi table {
+    table-layout: fixed;
+  }
+  .prose-handbook table.table-kpi th:first-child,
+  .prose-handbook table.table-kpi td:first-child {
+    width: 55%;
+    text-align: left !important;
+  }
+  .prose-handbook table.table-kpi th:nth-child(2),
+  .prose-handbook table.table-kpi td:nth-child(2) {
+    width: 20%;
+    text-align: center !important;
+  }
+  .prose-handbook table.table-kpi th:last-child,
+  .prose-handbook table.table-kpi td:last-child {
+    width: 25%;
+    text-align: left !important;
+  }
+
+  /* Expectations Table Style - Better readability for 30-60-90 day tables */
+  .prose-handbook table.table-expectations {
+    table-layout: fixed;
+  }
+  .prose-handbook table.table-expectations th {
+    width: 33.33%;
+    text-align: left !important;
+    vertical-align: top;
+  }
+  .prose-handbook table.table-expectations td {
+    vertical-align: top;
+    padding: 1rem 1rem;
+  }
+  .prose-handbook table.table-expectations ul {
+    @apply my-0 ml-0 pl-0 list-none space-y-2;
+  }
+  .prose-handbook table.table-expectations li {
+    @apply mt-0 leading-relaxed;
+    padding-left: 1.25em;
+    text-indent: -1.25em;
+  }
+  .prose-handbook table.table-expectations li::before {
+    content: "•";
+    color: hsl(var(--accent));
+    font-weight: bold;
+    display: inline-block;
+    width: 1.25em;
+  }
+  .prose-handbook table.table-expectations .summary-row td {
+    background-color: hsl(var(--accent) / 0.08);
+    border-top: 1px solid hsl(var(--accent) / 0.3);
+    padding: 0.75rem 1rem;
+  }
+  .prose-handbook table.table-expectations .summary-row:last-child td {
+    border-bottom: none !important;
+  }
+
+  /* Glass Effects */
+  .glass-card {
+    @apply bg-background/60 backdrop-blur-lg border border-border/50 shadow-sm transition-all duration-300;
+  }
+  .glass-card:hover {
+    @apply border-primary/20 shadow-md transform -translate-y-px;
+  }
+
+  .glass-panel {
+    @apply bg-background/80 backdrop-blur-md border border-border shadow-sm;
+  }
+
+  /* Carousel Mask - Responsive */
+  .carousel-mask {
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 12px,
+      black calc(100% - 12px),
+      transparent
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 12px,
+      black calc(100% - 12px),
+      transparent
+    );
+  }
+  @media (min-width: 768px) {
+    .carousel-mask {
+      mask-image: linear-gradient(
+        to right,
+        transparent,
+        black 60px,
+        black calc(100% - 60px),
+        transparent
+      );
+      -webkit-mask-image: linear-gradient(
+        to right,
+        transparent,
+        black 60px,
+        black calc(100% - 60px),
+        transparent
+      );
+    }
+  }
+
+  /* Folder Tab Border Overrides */
+  .folder-tab.folder-tab-active {
+    border-color: hsl(192 60% 25%) !important;
+  }
+  .folder-tab.folder-tab-inactive {
+    border-color: hsl(192 50% 70%) !important;
+  }
+}
