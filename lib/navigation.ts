@@ -7,7 +7,8 @@ import {
   Settings02Icon,
   UserGroupIcon,
   UserAdd01Icon,
-  Agreement01Icon
+  Agreement01Icon,
+  PolicyIcon
 } from "@hugeicons/core-free-icons";
 
 // Type for Hugeicons that can be rendered dynamically
@@ -167,6 +168,52 @@ export const EXPANDABLE_SECTIONS: ExpandableSection[] = [
         name: "Decision Rights", 
         href: "/playbook/decision-rights",
         keywords: ["authority", "delegation", "approval", "founder", "levels", "escalation", "permissions", "decisions", "authorize", "who can", "responsibility", "accountability", "sign off", "approve"]
+      },
+    ]
+  },
+  {
+    name: "HR Policies",
+    icon: PolicyIcon,
+    items: [
+      { 
+        name: "Code of Conduct", 
+        href: "/hr-policies/code-of-conduct",
+        keywords: ["code of conduct", "behavior", "ethics", "professionalism", "workplace", "rules", "guidelines", "standards", "discipline"]
+      },
+      { 
+        name: "Compensation & Benefits", 
+        href: "/hr-policies/compensation-benefits",
+        keywords: ["compensation", "benefits", "salary", "pay", "bonus", "incentives", "allowance", "insurance", "health", "leave", "vacation", "sick leave", "payroll", "13th month", "philhealth", "sss", "pag-ibig", "hmo", "kwikcare", "overtime", "ot", "de minimis", "tax"]
+      },
+      { 
+        name: "Employment Policies", 
+        href: "/hr-policies/employment",
+        keywords: ["employment", "policies", "contract", "probation", "regularization", "independent contractor", "internship", "ojt", "equal opportunity", "discrimination", "harassment", "code of conduct", "professionalism", "confidentiality", "data privacy", "conflict of interest", "nepotism"]
+      },
+      { 
+        name: "Health, Safety & Security", 
+        href: "/hr-policies/health-safety-security",
+        keywords: ["health", "safety", "security", "workplace", "emergency", "accident", "hazard", "wellness", "protection"]
+      },
+      { 
+        name: "Performance & Career Development", 
+        href: "/hr-policies/performance-career",
+        keywords: ["performance", "career", "development", "growth", "promotion", "training", "skills", "goals", "appraisal", "review"]
+      },
+      { 
+        name: "Resignation & Separation", 
+        href: "/hr-policies/resignation-separation",
+        keywords: ["resignation", "separation", "exit", "termination", "clearance", "final pay", "turnover", "offboarding", "last day"]
+      },
+      { 
+        name: "Rewards & Recognition", 
+        href: "/hr-policies/rewards-recognition",
+        keywords: ["rewards", "recognition", "appreciation", "award", "incentive", "bonus", "achievement", "employee of the month", "celebration"]
+      },
+      { 
+        name: "Work Hours & Attendance", 
+        href: "/hr-policies/work-hours-attendance",
+        keywords: ["work hours", "attendance", "schedule", "time", "shift", "overtime", "tardiness", "absence", "clock in", "clock out", "flexible"]
       },
     ]
   },

@@ -7,7 +7,7 @@ import { Suspense, useEffect } from "react";
 
 function LoginContent() {
   const searchParams = useSearchParams();
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   const error = searchParams.get("error");
   const callbackUrl = searchParams.get("callbackUrl") || "/home";

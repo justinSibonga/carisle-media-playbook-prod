@@ -155,7 +155,7 @@ export function KpiDictionarySection() {
     <div className="animate-fade-in prose-handbook">
       {/* Header Block */}
       <div className="mb-8">
-        <p className="!text-accent font-medium tracking-widest uppercase text-sm mb-2">
+        <p className="text-accent! font-medium tracking-widest uppercase text-sm mb-2">
           Operations Playbook
         </p>
         <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-primary mb-4">
