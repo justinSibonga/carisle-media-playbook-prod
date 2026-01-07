@@ -358,7 +358,7 @@ export function Sidebar() {
               isCollapsed && "px-2"
             )}>
               <div className={cn(
-                "flex items-center gap-3 mb-3",
+                "flex flex-row items-center gap-3 mb-3",
                 isCollapsed && "justify-center"
               )}>
                 {session.user.image ? (
@@ -366,8 +366,6 @@ export function Sidebar() {
                   <img
                     src={session.user.image}
                     alt={session.user.name || "User"}
-                    width={36}
-                    height={36}
                     className="w-9 h-9 rounded-full shrink-0 object-cover"
                     referrerPolicy="no-referrer"
                   />
@@ -379,11 +377,11 @@ export function Sidebar() {
                   </div>
                 )}
                 {!isCollapsed && (
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-foreground truncate leading-tight">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-foreground truncate">
                       {session.user.name || "User"}
                     </p>
-                    <p className="text-xs text-muted-foreground truncate leading-tight mt-0.5">
+                    <p className="text-xs text-muted-foreground truncate">
                       {session.user.email}
                     </p>
                   </div>
@@ -392,8 +390,7 @@ export function Sidebar() {
               <button
                 onClick={() => setIsLogoutOpen(true)}
                 className={cn(
-                  "w-full flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors",
-                  "text-muted-foreground hover:text-destructive hover:bg-destructive/10",
+                  "w-full flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors",
                   isCollapsed && "p-2"
                 )}
                 title={isCollapsed ? "Sign out" : undefined}
