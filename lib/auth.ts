@@ -24,7 +24,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       
       const emailDomain = user.email.split("@")[1]?.toLowerCase();
       if (!emailDomain || !ALLOWED_DOMAINS.includes(emailDomain)) {
-        return "/login?error=AccessDenied";
+        return "/?error=AccessDenied";
       }
       
       return true;

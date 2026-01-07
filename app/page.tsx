@@ -39,12 +39,10 @@ function LoginContent() {
         {/* Logo/Brand */}
         <div className="text-center mb-8">
           <div className="flex flex-row items-center justify-center gap-1 mb-6">
-            <Image 
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img 
               src="/CMLogo-text.svg" 
               alt="Carisle Media" 
-              width={0}
-              height={0}
-              sizes="100vw"
               className="h-12 w-auto"
             />
             <span className="text-3xl tracking-tighter font-bold text-primary">Handbook</span>

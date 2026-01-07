@@ -12,12 +12,92 @@ import { cn } from "@/lib/utils";
 import { NAV_SECTIONS, EXPANDABLE_SECTIONS } from "@/lib/navigation";
 import { SearchDialog } from "@/components/search-dialog";
 
+// Logout Confirmation Dialog
+function LogoutDialog({ 
+  open, 
+  onOpenChange 
+}: { 
+  open: boolean; 
+  onOpenChange: (open: boolean) => void;
+}) {
+  const handleLogout = () => {
+    signOut({ callbackUrl: "/" });
+    onOpenChange(false);
+  };
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-60 bg-foreground/80 backdrop-blur-sm"
+            onClick={() => onOpenChange(false)}
+            aria-hidden="true"
+          />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: -20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: -20 }}
+            className="fixed left-[50%] top-[50%] z-61 w-full max-w-sm -translate-x-1/2 -translate-y-1/2 p-4"
+            role="dialog"
+            aria-modal="true"
+          >
+            <div className="overflow-hidden rounded-xl border border-border bg-card shadow-2xl p-6">
+              <div className="text-center">
+                <div className="mx-auto w-12 h-12 rounded-full bg-destructive/10 flex items-center justify-center mb-4">
+                  <svg
+                    className="w-6 h-6 text-destructive"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-foreground mb-2">
+                  Sign out
+                </h3>
+                <p className="text-sm text-muted-foreground mb-6">
+                  Are you sure you want to sign out of your account?
+                </p>
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => onOpenChange(false)}
+                  className="flex-1 px-4 py-2.5 text-sm font-medium text-foreground bg-muted hover:bg-muted/80 rounded-lg transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="flex-1 px-4 py-2.5 text-sm font-medium text-white bg-destructive hover:bg-destructive/90 rounded-lg transition-colors"
+                >
+                  Sign out
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
+
 
 export function Sidebar() {
   const pathname = usePathname();
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isLogoutOpen, setIsLogoutOpen] = useState(false);
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
   const [isCollapsed, setIsCollapsed] = useState(false);
   
@@ -282,16 +362,18 @@ export function Sidebar() {
                 isCollapsed && "justify-center"
               )}>
                 {session.user.image ? (
-                  <Image
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
                     src={session.user.image}
                     alt={session.user.name || "User"}
-                    width={32}
-                    height={32}
-                    className="rounded-full shrink-0"
+                    width={36}
+                    height={36}
+                    className="rounded-full shrink-0 object-cover"
+                    referrerPolicy="no-referrer"
                   />
                 ) : (
-                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                    <span className="text-xs font-medium text-primary">
+                  <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                    <span className="text-sm font-medium text-primary">
                       {session.user.name?.[0] || session.user.email?.[0] || "U"}
                     </span>
                   </div>
@@ -308,9 +390,10 @@ export function Sidebar() {
                 )}
               </div>
               <button
-                onClick={() => signOut({ callbackUrl: "/" })}
+                onClick={() => setIsLogoutOpen(true)}
                 className={cn(
-                  "mt-3 w-full flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors",
+                  "mt-3 w-full flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors border",
+                  "text-destructive/80 border-destructive/20 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30",
                   isCollapsed && "p-2"
                 )}
                 title={isCollapsed ? "Sign out" : undefined}
@@ -336,6 +419,7 @@ export function Sidebar() {
       </motion.aside>
 
       <SearchDialog open={isSearchOpen} onOpenChange={setIsSearchOpen} />
+      <LogoutDialog open={isLogoutOpen} onOpenChange={setIsLogoutOpen} />
     </>
   );
 }

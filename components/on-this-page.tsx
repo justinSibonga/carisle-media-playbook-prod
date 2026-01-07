@@ -73,9 +73,26 @@ export function OnThisPage() {
         // Only add if we haven't seen this ID before
         if (!seenIds.has(element.id)) {
           seenIds.add(element.id);
+          
+          // Extract title text, excluding number badges (spans with single digit)
+          // This handles headings like: <span>1</span>Professional Behavior
+          let title = '';
+          element.childNodes.forEach((node) => {
+            if (node.nodeType === Node.TEXT_NODE) {
+              title += node.textContent || '';
+            } else if (node.nodeType === Node.ELEMENT_NODE) {
+              const el = node as Element;
+              // Skip number badge spans (typically contain single digit)
+              const text = el.textContent || '';
+              if (!(el.tagName === 'SPAN' && /^\d+$/.test(text.trim()))) {
+                title += text;
+              }
+            }
+          });
+          
           items.push({
             id: element.id,
-            title: element.textContent || "",
+            title: title.trim() || element.textContent || "",
             level: element.tagName === "H2" ? 2 : 3,
           });
         }
