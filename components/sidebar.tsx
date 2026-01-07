@@ -46,8 +46,8 @@ function UserMenu({
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "w-full flex items-center gap-3 p-2 rounded-lg transition-all duration-200 hover:bg-muted group",
-          isCollapsed && "justify-center"
+          "w-full rounded-lg transition-all duration-200 hover:bg-muted group",
+          isCollapsed ? "flex justify-center p-2" : "grid grid-cols-[36px_1fr_16px] items-center gap-3 p-2"
         )}
         title={isCollapsed ? user.name || user.email || "User" : undefined}
       >
@@ -66,13 +66,13 @@ function UserMenu({
         )}
         {!isCollapsed && (
           <>
-            <div className="flex-1 min-w-0 text-left">
+            <div className="min-w-0 text-left overflow-hidden">
               <p className="text-sm font-medium text-foreground truncate">{user.name || "User"}</p>
               <p className="text-xs text-muted-foreground truncate">{user.email}</p>
             </div>
             <svg
               className={cn(
-                "w-4 h-4 text-muted-foreground transition-transform duration-200",
+                "w-4 h-4 text-muted-foreground transition-transform duration-200 flex-shrink-0",
                 isOpen && "rotate-180"
               )}
               viewBox="0 0 24 24"
