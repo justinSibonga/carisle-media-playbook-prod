@@ -1,31 +1,24 @@
 import { auth } from "@/lib/auth";
-import { NextResponse } from "next/server";
 
 export default auth((req) => {
   const { pathname } = req.nextUrl;
-  const isAuthenticated = !!req.auth;
 
-  // Debug logging (remove in production after testing)
-  console.log(`[Middleware] Path: ${pathname}, Authenticated: ${isAuthenticated}, Auth:`, req.auth);
+  // Allow public routes (root login page and auth API)
+  const publicPaths = ["/", "/api/auth"];
+  const isPublicPath = publicPaths.some(path =>
+    pathname === path || pathname.startsWith("/api/auth")
+  );
 
-  // Public routes that don't require authentication
-  const publicRoutes = ["/", "/api/auth"];
-  const isPublicRoute = publicRoutes.some(route => pathname === route || pathname.startsWith(route));
-
-  // If accessing a public route, allow it
-  if (isPublicRoute) {
-    return NextResponse.next();
+  if (isPublicPath) {
+    return;
   }
 
-  // If not authenticated and trying to access protected route, redirect to login
-  if (!isAuthenticated) {
+  // Redirect to login (root) if not authenticated
+  if (!req.auth) {
     const loginUrl = new URL("/", req.url);
     loginUrl.searchParams.set("callbackUrl", pathname);
-    return NextResponse.redirect(loginUrl);
+    return Response.redirect(loginUrl);
   }
-
-  // Allow authenticated users to access protected routes
-  return NextResponse.next();
 });
 
 export const config = {
