@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, ReactNode } from "react";
+import { useState, useRef, ReactNode, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 interface Tab {
@@ -14,12 +14,47 @@ interface Tab {
 interface FolderTabsProps {
   tabs: Tab[];
   defaultTab?: string;
+  hashToTabMap?: Record<string, string>; // Maps hash IDs to tab keys
 }
 
-export function FolderTabs({ tabs, defaultTab }: FolderTabsProps) {
+export function FolderTabs({ tabs, defaultTab, hashToTabMap = {} }: FolderTabsProps) {
   const [activeTab, setActiveTab] = useState(defaultTab || tabs[0]?.key);
   const currentTab = tabs.find(t => t.key === activeTab) || tabs[0];
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Handle hash-based navigation
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.slice(1); // Remove the #
+      if (!hash) return;
+
+      // Check if hash maps to a specific tab
+      const targetTab = hashToTabMap[hash];
+      if (targetTab && tabs.find(t => t.key === targetTab)) {
+        setActiveTab(targetTab);
+        // Wait for tab to switch, then scroll to element
+        setTimeout(() => {
+          const element = document.getElementById(hash);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 100);
+      } else {
+        // Try to find element directly
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    };
+
+    // Check hash on mount
+    handleHashChange();
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, [hashToTabMap, tabs]);
 
   const handleNextTab = (nextTabKey: string) => {
     setActiveTab(nextTabKey);

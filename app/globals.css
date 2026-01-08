@@ -400,6 +400,9 @@
     color: hsl(220 10% 15%);
     border-bottom: 1px solid hsl(210 20% 85%);
   }
+  .prose-handbook th.text-center {
+    text-align: center !important;
+  }
   .prose-handbook td {
     @apply px-4 py-2.5 text-foreground/80 font-sans align-top;
     font-size: var(--font-size-sm);

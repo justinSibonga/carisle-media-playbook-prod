@@ -69,6 +69,12 @@ const config: Config = {
         "status-success": {
             DEFAULT: "hsl(var(--status-success))",
             bg: "hsl(var(--status-success-bg))",
+        },
+        raci: {
+            responsible: "hsl(var(--raci-responsible))",
+            accountable: "hsl(var(--raci-accountable))",
+            consulted: "hsl(var(--raci-consulted))",
+            informed: "hsl(var(--raci-informed))",
         }
       },
       borderRadius: {
