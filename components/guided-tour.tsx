@@ -65,6 +65,12 @@ const tourSteps: Step[] = [
     disableScrolling: true,
   },
   {
+    target: "#tour-nav-hr-policies",
+    content: "All HR policies including compensation, benefits, work hours, code of conduct, and more.",
+    placement: "right",
+    disableScrolling: true,
+  },
+  {
     target: "#tour-nav-role-score-card",
     content: "Find role-specific scorecards with KPIs and expectations for each position.",
     placement: "right",
