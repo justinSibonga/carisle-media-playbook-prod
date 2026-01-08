@@ -23,7 +23,13 @@ export default auth((req) => {
 
 export const config = {
   matcher: [
-    // Match all paths except static files and _next
-    "/((?!_next/static|_next/image|favicon.ico|cm-icon.png|CMLogo-text.svg|.*\\.png$|.*\\.jpg$|.*\\.svg$).*)",
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - public folder assets
+     */
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };

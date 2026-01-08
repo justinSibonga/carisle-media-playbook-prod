@@ -1,8 +1,11 @@
 "use client";
 
+import Image from "next/image";
+
 type Person = {
   name: string;
   role: string;
+  image?: string;
 };
 
 type Department = {
@@ -12,37 +15,47 @@ type Department = {
 };
 
 const departments: Department[] = [
-  { id: "accounting", title: "Accounting", members: [{ name: "Amica Castro", role: "Accounting" }] },
-  { id: "hr", title: "HR & Admin", members: [{ name: "Agatha Adelino", role: "HR & Admin" }] },
-  { id: "sales", title: "Sales", members: [{ name: "Danica Lagria", role: "Sales" }] },
-  { id: "marketing", title: "Marketing", members: [{ name: "Hanna Jocoya", role: "Marketing" }, { name: "Jessica Quinones", role: "Marketing" }] },
-  { id: "creatives", title: "Creatives", members: [{ name: "Krisna Solis", role: "Creatives" }] },
-  { id: "video", title: "Video Marketing", members: [{ name: "Ivan Matias", role: "Video Marketing" }] },
-  { id: "dev", title: "Web Development", members: [{ name: "Maui Rayos", role: "Web Developer" }, { name: "Justin Sibonga", role: "Web Developer" }] },
+  { id: "accounting", title: "Accounting", members: [{ name: "Amica Castro", role: "Accounting", image: "/org/amica.jpg" }] },
+  { id: "hr", title: "HR & Admin", members: [{ name: "Agatha Adelino", role: "HR & Admin", image: "/org/agatha.jpg" }] },
+  { id: "sales", title: "Sales", members: [{ name: "Danica Lagria", role: "Sales", image: "/org/danica.jpg" }] },
+  { id: "marketing", title: "Marketing", members: [{ name: "Hanna Jocoya", role: "Marketing", image: "/org/hanna.jpg" }, { name: "Jessica Quinones", role: "Marketing", image: "/org/jessica.png" }] },
+  { id: "creatives", title: "Creatives", members: [{ name: "Krisna Solis", role: "Creatives", image: "/org/krisna.jpg" }] },
+  { id: "video", title: "Video Marketing", members: [{ name: "Ivan Matias", role: "Video Marketing", image: "/org/ivan.jpg" }] },
+  { id: "dev", title: "Web Development", members: [{ name: "Maui Rayos", role: "Web Developer", image: "/org/maui.png" }, { name: "Justin Sibonga", role: "Web Developer", image: "/org/justin.png" }] },
 ];
 
-// Optimized Apple-style card - clean design with no borders
+// Optimized Apple-style card - clean design with name below photo
 function PersonCard({ person, isCEO = false }: { person: Person; isCEO?: boolean }) {
   return (
     <div
-      className={`relative rounded-[20px] overflow-hidden ${isCEO ? 'w-[180px] h-[220px]' : 'w-[130px] h-[180px]'}`}
+      className={`flex flex-col rounded-[20px] overflow-hidden ${isCEO ? 'w-[180px]' : 'w-[130px]'}`}
       style={{
         background: 'linear-gradient(180deg, #f5f5f5 0%, #ebebeb 100%)',
         boxShadow: '0 8px 32px -8px rgba(0,0,0,0.1)',
         border: '1px solid #e0e0e0'
       }}
     >
-      <div className="absolute inset-0 flex items-center justify-center pb-14">
-        <span className={`font-medium text-neutral-400 ${isCEO ? 'text-4xl' : 'text-3xl'} tracking-tighter`}>
-          {person.name.split(' ').map(n => n[0]).join('')}
-        </span>
+      {/* Photo area */}
+      <div className={`relative ${isCEO ? 'h-[170px]' : 'h-[130px]'}`}>
+        {person.image ? (
+          <Image
+            src={person.image}
+            alt={person.name}
+            fill
+            className="object-cover object-top"
+            sizes={isCEO ? '180px' : '130px'}
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className={`font-medium text-neutral-400 ${isCEO ? 'text-4xl' : 'text-3xl'} tracking-tighter`}>
+              {person.name.split(' ').map(n => n[0]).join('')}
+            </span>
+          </div>
+        )}
       </div>
+      {/* Name label - overlapping photo for premium layered effect */}
       <div 
-        className="absolute bottom-2.5 left-2.5 right-2.5 rounded-lg px-2.5 py-2 flex flex-col items-center justify-center text-center"
-        style={{
-          background: 'rgba(255, 255, 255, 0.9)',
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)'
-        }}
+        className="px-2.5 py-2 flex flex-col items-center justify-center text-center bg-white rounded-t-xl -mt-3 relative z-10"
       >
         <div className={`font-semibold text-neutral-900 leading-snug tracking-tight line-clamp-1 w-full ${isCEO ? 'text-[13px]' : 'text-[11px]'}`}>{person.name}</div>
         <div className={`font-medium text-neutral-500 uppercase tracking-wider mt-0.5 line-clamp-2 w-full leading-tight ${isCEO ? 'text-[8px]' : 'text-[7px]'}`}>{person.role}</div>
@@ -87,10 +100,10 @@ export default function OrgChartPage() {
         {/* Leadership */}
         <div className="flex flex-col items-center mb-6">
           <div id="tour-ceo">
-            <PersonCard person={{ name: "Juliana", role: "Chief Executive Officer" }} isCEO={true} />
+            <PersonCard person={{ name: "Juliana", role: "Chief Executive Officer", image: "/org/julia.jpg" }} isCEO={true} />
           </div>
           <div className="w-px h-4 bg-amber-300/30" />
-          <PersonCard person={{ name: "Danica Lagria", role: "Operations Coordinator" }} isCEO={true} />
+          <PersonCard person={{ name: "Danica Lagria", role: "Operations Coordinator", image: "/org/danica.jpg" }} isCEO={true} />
         </div>
         
         {/* All team members in a grid - using the same PersonCard component */}
@@ -108,12 +121,12 @@ export default function OrgChartPage() {
         <div className="flex flex-col items-center px-6 mt-8 min-w-max">
           {/* CEO */}
           <div id="tour-ceo">
-            <PersonCard person={{ name: "Juliana", role: "Chief Executive Officer" }} isCEO={true} />
+            <PersonCard person={{ name: "Juliana", role: "Chief Executive Officer", image: "/org/julia.jpg" }} isCEO={true} />
           </div>
           <div className="w-px h-6 bg-amber-300/30" />
           
           {/* Operations Coordinator */}
-          <PersonCard person={{ name: "Danica Lagria", role: "Operations Coordinator" }} isCEO={true} />
+          <PersonCard person={{ name: "Danica Lagria", role: "Operations Coordinator", image: "/org/danica.jpg" }} isCEO={true} />
           <div className="w-px h-6 bg-amber-300/30" />
           
           {/* Horizontal line container - width matches departments row exactly */}
