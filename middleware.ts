@@ -5,6 +5,9 @@ export default auth((req) => {
   const { pathname } = req.nextUrl;
   const isAuthenticated = !!req.auth;
 
+  // Debug logging (remove in production after testing)
+  console.log(`[Middleware] Path: ${pathname}, Authenticated: ${isAuthenticated}, Auth:`, req.auth);
+
   // Public routes that don't require authentication
   const publicRoutes = ["/", "/api/auth"];
   const isPublicRoute = publicRoutes.some(route => pathname === route || pathname.startsWith(route));

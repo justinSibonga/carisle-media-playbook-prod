@@ -5,6 +5,7 @@ import Google from "next-auth/providers/google";
 const ALLOWED_DOMAINS = ["hireable.ph", "carislemedia.com"];
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  trustHost: true,
   providers: [
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID!,
