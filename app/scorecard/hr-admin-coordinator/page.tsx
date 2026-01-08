@@ -490,7 +490,7 @@ export default function HRAdminCoordinatorScorecardPage() {
         {/* Header */}
         <div className="mb-8">
           <p className="text-accent! font-medium tracking-widest uppercase text-sm mb-2">
-            Role Score Card
+            Role Scorecard
           </p>
           <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-primary mb-4">
             HR & Admin Coordinator

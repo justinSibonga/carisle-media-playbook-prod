@@ -218,7 +218,7 @@ export const EXPANDABLE_SECTIONS: ExpandableSection[] = [
     ]
   },
   {
-    name: "Role Score Card",
+    name: "Role Scorecard",
     icon: UserSquareIcon,
     items: [
       { 

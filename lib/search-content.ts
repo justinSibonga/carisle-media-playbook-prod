@@ -93,7 +93,7 @@ export const raciChartSearch = {
 export const financeCoordinatorSearch = {
   name: "Finance Coordinator",
   href: "/scorecard/finance-coordinator",
-  category: "Role Score Card",
+  category: "Role Scorecard",
   content: "Finance Coordinator Role Scorecard finance accounting budget taxes expenses income financial bookkeeping money cash invoices payments billing accounts receivable payable roi revenue Key Responsibilities Accounts receivable management payable processing Monthly financial close Budget tracking reporting Tax compliance preparation Financial documentation KPI Targets DSO Days Sales Outstanding 30 days Expenses Paid On-Time 95% Monthly Close Cycle 5 business days Budget Variance 5% Documentation Audit Ready 100% Required Competencies Accounting knowledge Financial software proficiency Attention detail accuracy Deadline management Communication skills"
 };
 
@@ -101,7 +101,7 @@ export const financeCoordinatorSearch = {
 export const hrAdminCoordinatorSearch = {
   name: "HR & Admin Coordinator",
   href: "/scorecard/hr-admin-coordinator",
-  category: "Role Score Card",
+  category: "Role Scorecard",
   content: "HR Admin Coordinator Role Scorecard human resources admin onboarding payroll policies people records employee staff benefits leave vacation attendance documents files administration Key Responsibilities Employee onboarding offboarding Payroll processing Policy administration Record keeping documentation Benefits administration Leave management KPI Targets New Hire Onboarding Completion 100% Policy Acknowledgement Leave Balance Accuracy Employee Record Completeness Payroll Error Rate 0% Document Retrieval 2 minutes Required Competencies HR knowledge practices Confidentiality discretion Organization skills Communication HRIS software proficiency"
 };
 
@@ -109,7 +109,7 @@ export const hrAdminCoordinatorSearch = {
 export const webDeveloperSearch = {
   name: "Web Developer",
   href: "/scorecard/web-developer",
-  category: "Role Score Card",
+  category: "Role Scorecard",
   content: "Web Developer Role Scorecard developer tech GHL GoHighLevel HighLevel website funnel landing page integration technical code programming development web frontend backend api automation Key Responsibilities Website development maintenance Landing page funnel creation Technical integrations APIs Bug fixes troubleshooting Performance optimization Client technical support KPI Targets Page Uptime SLA 99.5% Average Load Speed 3 seconds Bug Resolution Time 24 hours Client Request Turnaround 48 hours Deployment Success Rate 95% Required Competencies HTML CSS JavaScript proficiency GoHighLevel expertise API integration knowledge Problem solving debugging Client communication Time management"
 };
 

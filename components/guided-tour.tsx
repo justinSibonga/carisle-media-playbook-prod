@@ -71,7 +71,7 @@ const tourSteps: Step[] = [
     disableScrolling: true,
   },
   {
-    target: "#tour-nav-role-score-card",
+    target: "#tour-nav-role-scorecard",
     content: "Find role-specific scorecards with KPIs and expectations for each position.",
     placement: "right",
     disableScrolling: true,
