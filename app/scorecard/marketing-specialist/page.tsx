@@ -371,6 +371,7 @@ export default function MarketingSpecialistScorecardPage() {
                 Needs Approval
               </div>
               <div className="bg-card p-4 space-y-2 text-sm">
+                <p>• <strong>Changes to scope, timelines, or deliverables</strong> that affect client expectations</p>
                 <p>• <strong>Client-facing changes</strong> that alter agreed outcomes, messaging, or commitments</p>
                 <p>• <strong>Use of new tools, integrations, or workflows</strong> that impact other teams or systems</p>
               </div>
@@ -381,6 +382,7 @@ export default function MarketingSpecialistScorecardPage() {
                 Must Escalate If
               </div>
               <div className="bg-card p-4 space-y-2 text-sm">
+                <p>• <strong>Deadline risk exceeds 24 hours</strong> on a critical marketing task or client deliverable</p>
                 <p>• <strong>A technical limitation in GHL</strong> blocks delivery after reasonable research and testing</p>
                 <p>• <strong>Repeated dependency delays</strong> that prevent task completion despite follow-ups</p>
                 <p>• <strong>Client dissatisfaction</strong> that may result in escalation, refund, or churn</p>
