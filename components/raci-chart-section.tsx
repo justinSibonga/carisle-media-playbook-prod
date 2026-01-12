@@ -2,6 +2,8 @@
 
 import { useEffect } from "react";
 import { FolderTabs } from "@/components/ui/folder-tabs";
+import { cn } from "@/lib/utils";
+import { RACI_COLUMN_WIDTH } from "@/lib/constants";
 
 // Helper function to get RACI cell styles
 function getRaciStyles(v: string) {
@@ -19,7 +21,7 @@ function RaciCell({ value, textColor }: { value: string; textColor?: string }) {
     return <span className="text-muted-foreground">—</span>;
   }
   return (
-    <span className={`text-xs font-bold ${textColor || ""}`}>
+    <span className={cn("text-xs font-bold", textColor)}>
       {value}
     </span>
   );
@@ -42,25 +44,25 @@ function RaciTable({ children }: { children: React.ReactNode }) {
     <div className="overflow-x-auto -mx-3 md:mx-0">
       <table className="w-full text-sm border-collapse table-fixed min-w-[800px]">
         <colgroup>
-          <col style={{ width: '200px' }} />
-          <col style={{ width: '90px' }} />
-          <col style={{ width: '80px' }} />
-          <col style={{ width: '80px' }} />
-          <col style={{ width: '90px' }} />
-          <col style={{ width: '80px' }} />
-          <col style={{ width: '80px' }} />
-          <col style={{ width: '80px' }} />
+          <col style={{ width: RACI_COLUMN_WIDTH.ACTIVITY }} />
+          <col style={{ width: RACI_COLUMN_WIDTH.FREQUENCY }} />
+          <col style={{ width: RACI_COLUMN_WIDTH.ROLE }} />
+          <col style={{ width: RACI_COLUMN_WIDTH.ROLE }} />
+          <col style={{ width: RACI_COLUMN_WIDTH.MARKETING }} />
+          <col style={{ width: RACI_COLUMN_WIDTH.ROLE }} />
+          <col style={{ width: RACI_COLUMN_WIDTH.ROLE }} />
+          <col style={{ width: RACI_COLUMN_WIDTH.ROLE }} />
         </colgroup>
         <thead>
           <tr className="bg-muted/50 border-b border-border">
-            <th style={{ width: '200px', minWidth: '200px' }} className="text-left py-3 px-3 font-semibold text-sm">Activity</th>
-            <th style={{ width: '90px', minWidth: '90px' }} className="text-center py-3 px-1 font-semibold text-sm">Frequency</th>
-            <th style={{ width: '80px', minWidth: '80px' }} className="text-center py-3 px-2 font-semibold text-sm">Founder</th>
-            <th style={{ width: '80px', minWidth: '80px' }} className="text-center py-3 px-2 font-semibold text-sm">Ops</th>
-            <th style={{ width: '90px', minWidth: '90px' }} className="text-center py-3 px-2 font-semibold text-sm">Marketing</th>
-            <th style={{ width: '80px', minWidth: '80px' }} className="text-center py-3 px-2 font-semibold text-sm">HR</th>
-            <th style={{ width: '80px', minWidth: '80px' }} className="text-center py-3 px-2 font-semibold text-sm">Web Dev</th>
-            <th style={{ width: '80px', minWidth: '80px' }} className="text-center py-3 px-2 font-semibold text-sm">Finance</th>
+            <th style={{ width: RACI_COLUMN_WIDTH.ACTIVITY, minWidth: RACI_COLUMN_WIDTH.ACTIVITY }} className="text-left py-3 px-3 font-semibold text-sm">Activity</th>
+            <th style={{ width: RACI_COLUMN_WIDTH.FREQUENCY, minWidth: RACI_COLUMN_WIDTH.FREQUENCY }} className="text-center py-3 px-1 font-semibold text-sm">Frequency</th>
+            <th style={{ width: RACI_COLUMN_WIDTH.ROLE, minWidth: RACI_COLUMN_WIDTH.ROLE }} className="text-center py-3 px-2 font-semibold text-sm">Founder</th>
+            <th style={{ width: RACI_COLUMN_WIDTH.ROLE, minWidth: RACI_COLUMN_WIDTH.ROLE }} className="text-center py-3 px-2 font-semibold text-sm">Ops</th>
+            <th style={{ width: RACI_COLUMN_WIDTH.MARKETING, minWidth: RACI_COLUMN_WIDTH.MARKETING }} className="text-center py-3 px-2 font-semibold text-sm">Marketing</th>
+            <th style={{ width: RACI_COLUMN_WIDTH.ROLE, minWidth: RACI_COLUMN_WIDTH.ROLE }} className="text-center py-3 px-2 font-semibold text-sm">HR</th>
+            <th style={{ width: RACI_COLUMN_WIDTH.ROLE, minWidth: RACI_COLUMN_WIDTH.ROLE }} className="text-center py-3 px-2 font-semibold text-sm">Web Dev</th>
+            <th style={{ width: RACI_COLUMN_WIDTH.ROLE, minWidth: RACI_COLUMN_WIDTH.ROLE }} className="text-center py-3 px-2 font-semibold text-sm">Finance</th>
           </tr>
         </thead>
         <tbody>
@@ -91,14 +93,14 @@ function DataRow({ activity, frequency, founder, ops, marketing, hr, web, financ
 
   return (
     <tr className="border-b border-border hover:bg-muted/30">
-      <td style={{ width: '200px', minWidth: '200px' }} className="py-3 px-3 text-left text-sm">{activity}</td>
-      <td style={{ width: '90px', minWidth: '90px' }} className="py-3 px-3 text-center text-sm text-muted-foreground">{frequency}</td>
-      <td style={{ width: '80px', minWidth: '80px' }} className={`py-3 pl-4 pr-2 text-center ${founderStyles.bg} ${founderStyles.text}`}><RaciCell value={founder} textColor={founderStyles.text} /></td>
-      <td style={{ width: '80px', minWidth: '80px' }} className={`py-3 pl-6 pr-2 text-center ${opsStyles.bg} ${opsStyles.text}`}><RaciCell value={ops} textColor={opsStyles.text} /></td>
-      <td style={{ width: '90px', minWidth: '90px' }} className={`py-3 pl-3 pr-2 text-center ${marketingStyles.bg} ${marketingStyles.text}`}><RaciCell value={marketing} textColor={marketingStyles.text} /></td>
-      <td style={{ width: '80px', minWidth: '80px' }} className={`py-3 pl-6 pr-2 text-center ${hrStyles.bg} ${hrStyles.text}`}><RaciCell value={hr} textColor={hrStyles.text} /></td>
-      <td style={{ width: '80px', minWidth: '80px' }} className={`py-3 pl-4 pr-2 text-center ${webStyles.bg} ${webStyles.text}`}><RaciCell value={web} textColor={webStyles.text} /></td>
-      <td style={{ width: '80px', minWidth: '80px' }} className={`py-3 pl-4 pr-2 text-center ${financeStyles.bg} ${financeStyles.text}`}><RaciCell value={finance} textColor={financeStyles.text} /></td>
+      <td style={{ width: RACI_COLUMN_WIDTH.ACTIVITY, minWidth: RACI_COLUMN_WIDTH.ACTIVITY }} className="py-3 px-3 text-left text-sm">{activity}</td>
+      <td style={{ width: RACI_COLUMN_WIDTH.FREQUENCY, minWidth: RACI_COLUMN_WIDTH.FREQUENCY }} className="py-3 px-3 text-center text-sm text-muted-foreground">{frequency}</td>
+      <td style={{ width: RACI_COLUMN_WIDTH.ROLE, minWidth: RACI_COLUMN_WIDTH.ROLE }} className={cn("py-3 pl-4 pr-2 text-center", founderStyles.bg, founderStyles.text)}><RaciCell value={founder} textColor={founderStyles.text} /></td>
+      <td style={{ width: RACI_COLUMN_WIDTH.ROLE, minWidth: RACI_COLUMN_WIDTH.ROLE }} className={cn("py-3 pl-6 pr-2 text-center", opsStyles.bg, opsStyles.text)}><RaciCell value={ops} textColor={opsStyles.text} /></td>
+      <td style={{ width: RACI_COLUMN_WIDTH.MARKETING, minWidth: RACI_COLUMN_WIDTH.MARKETING }} className={cn("py-3 pl-3 pr-2 text-center", marketingStyles.bg, marketingStyles.text)}><RaciCell value={marketing} textColor={marketingStyles.text} /></td>
+      <td style={{ width: RACI_COLUMN_WIDTH.ROLE, minWidth: RACI_COLUMN_WIDTH.ROLE }} className={cn("py-3 pl-6 pr-2 text-center", hrStyles.bg, hrStyles.text)}><RaciCell value={hr} textColor={hrStyles.text} /></td>
+      <td style={{ width: RACI_COLUMN_WIDTH.ROLE, minWidth: RACI_COLUMN_WIDTH.ROLE }} className={cn("py-3 pl-4 pr-2 text-center", webStyles.bg, webStyles.text)}><RaciCell value={web} textColor={webStyles.text} /></td>
+      <td style={{ width: RACI_COLUMN_WIDTH.ROLE, minWidth: RACI_COLUMN_WIDTH.ROLE }} className={cn("py-3 pl-4 pr-2 text-center", financeStyles.bg, financeStyles.text)}><RaciCell value={finance} textColor={financeStyles.text} /></td>
     </tr>
   );
 }
@@ -359,7 +361,7 @@ function FounderSectionHeader({ title, type }: { title: string; type: "accountab
   
   return (
     <tr>
-      <td colSpan={2} className={`${getStyles()} font-bold text-center py-2 text-xs`} style={{ color: getTextColor() }}>
+      <td colSpan={2} className={cn(getStyles(), "font-bold text-center py-2 text-xs")} style={{ color: getTextColor() }}>
         {title}
       </td>
     </tr>

@@ -1,0 +1,351 @@
+# Carisle Media Handbook - Project Rules
+
+## Tech Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **Styling**: Tailwind CSS v4
+- **Language**: TypeScript (strict mode)
+- **Package Manager**: npm/pnpm
+
+---
+
+## Project Structure
+
+```
+src/
+├── app/                    # App Router pages and layouts
+│   ├── (routes)/          # Route groups
+│   ├── api/               # API routes
+│   ├── layout.tsx         # Root layout
+│   └── page.tsx           # Home page
+├── components/            # React components
+│   ├── ui/               # Reusable UI primitives
+│   └── [feature]/        # Feature-specific components
+├── lib/                   # Utility functions and helpers
+├── hooks/                 # Custom React hooks
+├── types/                 # TypeScript type definitions
+├── styles/               # Global styles
+│   └── globals.css       # Tailwind imports and custom CSS
+└── constants/            # App constants and config
+```
+
+---
+
+## File Naming Conventions
+
+| Type       | Convention                     | Example                  |
+| ---------- | ------------------------------ | ------------------------ |
+| Components | kebab-case                     | `user-profile.tsx`       |
+| Pages      | kebab-case folder + `page.tsx` | `app/dashboard/page.tsx` |
+| Utilities  | kebab-case                     | `format-date.ts`         |
+| Hooks      | camelCase with `use` prefix    | `useAuth.ts`             |
+| Types      | kebab-case                     | `user-types.ts`          |
+| Constants  | kebab-case                     | `api-endpoints.ts`       |
+
+---
+
+## Component Patterns
+
+### Functional Components Only
+
+```tsx
+// ✅ Correct
+export function UserCard({ user }: UserCardProps) {
+  return <div>{user.name}</div>;
+}
+
+// ❌ Avoid class components
+```
+
+### Props Interface Naming
+
+```tsx
+// ✅ Correct - use ComponentNameProps
+interface UserCardProps {
+  user: User;
+  onSelect?: (id: string) => void;
+}
+
+// ❌ Avoid generic names like IProps, Props
+```
+
+### Component Structure
+
+```tsx
+// 1. Imports
+import { useState } from "react";
+import { cn } from "@/lib/utils";
+
+// 2. Types
+interface ComponentProps {
+  // ...
+}
+
+// 3. Component
+export function Component({ prop }: ComponentProps) {
+  // 3a. Hooks
+  const [state, setState] = useState();
+
+  // 3b. Derived state / computations
+  const computed = useMemo(() => {}, []);
+
+  // 3c. Effects
+  useEffect(() => {}, []);
+
+  // 3d. Handlers
+  const handleClick = () => {};
+
+  // 3e. Render
+  return <div />;
+}
+```
+
+---
+
+## Tailwind CSS v4 Guidelines
+
+### Import Structure (globals.css)
+
+```css
+@import "tailwindcss";
+
+/* Custom CSS variables */
+@theme {
+  --color-primary: #3b82f6;
+  --color-secondary: #64748b;
+  /* ... */
+}
+```
+
+### Class Naming Best Practices
+
+```tsx
+// ✅ Use cn() for conditional classes
+import { cn } from '@/lib/utils';
+
+<div className={cn(
+  "flex items-center gap-4",
+  isActive && "bg-primary",
+  className
+)} />
+
+// ✅ Group related utilities logically
+<button className="
+  px-4 py-2 rounded-lg
+  bg-primary text-white
+  hover:bg-primary/90 active:scale-95
+  transition-all duration-200
+" />
+
+// ❌ Avoid excessively long class strings without organization
+```
+
+### Responsive Design
+
+```tsx
+// ✅ Mobile-first approach
+<div className="flex flex-col md:flex-row lg:gap-8" />
+
+// Breakpoints: sm (640px), md (768px), lg (1024px), xl (1280px), 2xl (1536px)
+```
+
+---
+
+## TypeScript Guidelines
+
+### Strict Mode Required
+
+```json
+{
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true
+  }
+}
+```
+
+### Type Definitions
+
+```tsx
+// ✅ Use interface for object shapes
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
+// ✅ Use type for unions, primitives, and complex types
+type Status = "idle" | "loading" | "success" | "error";
+type ID = string | number;
+
+// ❌ Avoid `any` - use `unknown` if type is truly unknown
+```
+
+### Import Aliases
+
+```tsx
+// ✅ Use path aliases
+import { Button } from "@/components/ui/button";
+import { formatDate } from "@/lib/utils";
+
+// ❌ Avoid relative paths for deep imports
+import { Button } from "../../../../components/ui/button";
+```
+
+---
+
+## API Patterns (App Router)
+
+### Route Handlers
+
+```tsx
+// app/api/users/route.ts
+import { NextRequest, NextResponse } from "next/server";
+
+export async function GET(request: NextRequest) {
+  try {
+    const data = await fetchData();
+    return NextResponse.json(data);
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
+```
+
+### Server Actions
+
+```tsx
+// actions/user-actions.ts
+"use server";
+
+import { revalidatePath } from "next/cache";
+
+export async function updateUser(formData: FormData) {
+  // Validate input
+  // Perform mutation
+  revalidatePath("/users");
+}
+```
+
+---
+
+## Data Fetching
+
+### Server Components (Preferred)
+
+```tsx
+// ✅ Fetch in Server Components
+async function UserList() {
+  const users = await getUsers(); // Direct async/await
+  return (
+    <ul>
+      {users.map((u) => (
+        <li key={u.id}>{u.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+### Client Components (When Needed)
+
+```tsx
+"use client";
+
+// ✅ Use React Query or SWR for client-side fetching
+import { useQuery } from "@tanstack/react-query";
+
+function UserProfile({ id }: { id: string }) {
+  const { data, isLoading } = useQuery({
+    queryKey: ["user", id],
+    queryFn: () => fetchUser(id),
+  });
+  // ...
+}
+```
+
+---
+
+## Accessibility (a11y)
+
+- All interactive elements must be keyboard accessible
+- Use semantic HTML (`<button>`, `<nav>`, `<main>`, etc.)
+- Include proper ARIA labels where needed
+- Maintain color contrast ratios (WCAG AA minimum)
+- Test with screen readers
+
+---
+
+## Performance Best Practices
+
+1. **Use Server Components by default** - Only add `'use client'` when needed
+2. **Optimize images** - Use `next/image` with proper sizing
+3. **Code splitting** - Use dynamic imports for heavy components
+4. **Minimize client-side JavaScript** - Keep bundles small
+5. **Cache appropriately** - Use `cache()` and `revalidate` options
+
+---
+
+## Magic Numbers / Constants
+
+Avoid hardcoded numeric values. Use named constants from `@/lib/constants`:
+
+```tsx
+// ✅ Correct - use named constants
+import { ICON_SIZE, TIMING, RACI_COLUMN_WIDTH } from '@/lib/constants';
+
+<HugeiconsIcon icon={AlertIcon} size={ICON_SIZE.XL} />
+setTimeout(() => setVisible(false), TIMING.TOAST_DURATION);
+<td style={{ width: RACI_COLUMN_WIDTH.ACTIVITY }}>...</td>
+
+// ❌ Avoid magic numbers
+<HugeiconsIcon icon={AlertIcon} size={20} />
+setTimeout(() => setVisible(false), 2000);
+<td style={{ width: '200px' }}>...</td>
+```
+
+### Available Constants (`lib/constants.ts`)
+
+| Category            | Constants                                                                               |
+| ------------------- | --------------------------------------------------------------------------------------- |
+| `ICON_SIZE`         | `XS (12)`, `SM (14)`, `MD (16)`, `LG (18)`, `XL (20)`, `XXL (24)`, `XXXL (32)`          |
+| `TIMING`            | `IMMEDIATE (0)`, `TOAST_DURATION (2000)`, `SCROLL_DELAY (100)`, `DEBOUNCE_SEARCH (300)` |
+| `RACI_COLUMN_WIDTH` | `ACTIVITY`, `FREQUENCY`, `ROLE`, `MARKETING`                                            |
+| `LAYOUT`            | `AVATAR_SIZE (40)`, `ICON_CONTAINER_SM (16)`                                            |
+| `Z_INDEX`           | `BASE`, `DROPDOWN`, `HEADER`, `SIDEBAR`, `MODAL`, `TOAST`                               |
+
+---
+
+## Git Conventions
+
+### Branch Naming
+
+```
+feature/feature-name
+fix/bug-description
+chore/task-description
+```
+
+### Commit Messages
+
+```
+feat: add user authentication
+fix: resolve login redirect issue
+docs: update README
+chore: update dependencies
+refactor: simplify user service
+```
+
+---
+
+## Pre-commit Checklist
+
+- [ ] TypeScript compiles without errors (`npm run type-check`)
+- [ ] ESLint passes (`npm run lint`)
+- [ ] Build succeeds (`npm run build`)
+- [ ] No console.log statements in production code
+- [ ] Proper error handling implemented

@@ -2,6 +2,7 @@
 
 import { FolderTabs } from "@/components/ui/folder-tabs";
 import { StepProcess } from "@/components/ui/step-process";
+import { cn } from "@/lib/utils";
 
 function OverviewContent() {
   return (
@@ -51,7 +52,7 @@ function OverviewContent() {
               { phase: "Phase 4: Handoff", desc: "Training, documentation, go-live" },
               { phase: "Phase 5: Retainer", desc: "Monthly optimization and support" }
             ].map((row, i) => (
-              <tr key={i} className={`border-b border-border last:border-0 ${i % 2 === 1 ? 'bg-muted/30' : ''}`}>
+              <tr key={i} className={cn("border-b border-border last:border-0", i % 2 === 1 && "bg-muted/30")}>
                 <td className="px-4 py-3 font-medium">{row.phase}</td>
                 <td className="px-4 py-3 text-foreground/80">{row.desc}</td>
               </tr>
@@ -223,7 +224,7 @@ function Phase2Content() {
               { item: "Target Audience", details: "Ideal client profile, demographics, pain points" },
               { item: "Access Credentials", details: "Domain registrar, hosting, existing tools" }
             ].map((row, i) => (
-              <tr key={i} className={`border-b border-border last:border-0 ${i % 2 === 1 ? 'bg-muted/30' : ''}`}>
+              <tr key={i} className={cn("border-b border-border last:border-0", i % 2 === 1 && "bg-muted/30")}>
                 <td className="px-4 py-3 font-medium">{row.item}</td>
                 <td className="px-4 py-3 text-foreground/80">{row.details}</td>
               </tr>
@@ -410,7 +411,7 @@ function Phase5Content() {
               { service: "System Updates", desc: "Workflow tweaks, new sequences, page updates" },
               { service: "Priority Support", desc: "Fast response times and troubleshooting" }
             ].map((row, i) => (
-              <tr key={i} className={`border-b border-border last:border-0 ${i % 2 === 1 ? 'bg-muted/30' : ''}`}>
+              <tr key={i} className={cn("border-b border-border last:border-0", i % 2 === 1 && "bg-muted/30")}>
                 <td className="px-4 py-3 font-medium">{row.service}</td>
                 <td className="px-4 py-3 text-foreground/80">{row.desc}</td>
               </tr>
@@ -435,8 +436,8 @@ function Phase5Content() {
               { type: "Review feedback", time: "48 hours maximum" },
               { type: "Weekly status update", time: "Every Friday by 5 PM" }
             ].map((row, i) => (
-              <tr key={i} className={`border-b border-border last:border-0 ${i % 2 === 1 ? 'bg-muted/30' : ''}`}>
-                <td className={`px-4 py-3 font-medium ${row.urgent ? 'text-destructive' : ''}`}>{row.type}</td>
+              <tr key={i} className={cn("border-b border-border last:border-0", i % 2 === 1 && "bg-muted/30")}>
+                <td className={cn("px-4 py-3 font-medium", row.urgent && "text-destructive")}>{row.type}</td>
                 <td className="px-4 py-3 text-foreground/80">{row.time}</td>
               </tr>
             ))}
@@ -455,7 +456,7 @@ function Phase5Content() {
           ].map((item, i) => (
             <li key={i} className="flex items-start gap-3 text-base text-foreground/80">
               <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
-              <span><span className={`font-medium ${item.urgent ? 'text-destructive' : 'text-foreground'}`}>{item.label}:</span> {item.value}</span>
+              <span><span className={cn("font-medium", item.urgent ? "text-destructive" : "text-foreground")}>{item.label}:</span> {item.value}</span>
             </li>
           ))}
         </ul>

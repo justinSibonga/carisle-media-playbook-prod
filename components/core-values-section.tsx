@@ -1,3 +1,5 @@
+import { cn } from "@/lib/utils";
+
 export function CoreValuesSection() {
   const coreValues = [
     {
@@ -97,7 +99,7 @@ export function CoreValuesSection() {
             className="bg-card border border-border rounded-lg overflow-hidden shadow-sm"
           >
             {/* Card Header */}
-            <div className={`${value.accentColor} px-4 py-3`}>
+            <div className={cn(value.accentColor, "px-4 py-3")}>
               <h2 className="text-primary-foreground font-bold text-lg uppercase tracking-wide my-0!">
                 {value.number}. {value.title}
               </h2>
