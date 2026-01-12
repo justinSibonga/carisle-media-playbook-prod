@@ -94,6 +94,7 @@ export default function HomePage() {
                 height={0}
                 sizes="100vw"
                 className="h-12 md:h-20 w-auto"
+                priority
               />
               <span className="text-3xl md:text-5xl tracking-tighter font-bold text-primary">Handbook</span>
             </div>

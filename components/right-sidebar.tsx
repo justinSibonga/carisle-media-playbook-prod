@@ -1,5 +1,4 @@
-"use client";
-
+// Server Component - no interactivity needed, images load faster on server
 import Image from "next/image";
 import Link from "next/link";
 
@@ -23,6 +22,7 @@ export function RightSidebar() {
             width={288}
             height={400}
             className="w-full mb-6 mx-auto"
+            priority
           />
           <div className="space-y-2">
             <h3 className="font-semibold text-foreground">Jan 5, 2026 UI Refactor</h3>
