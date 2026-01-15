@@ -442,16 +442,16 @@
     @apply font-semibold;
   }
 
-  /* Zebra Striping - Explicitly visible */
-  .prose-handbook tbody tr:nth-child(even) {
+  /* Zebra Striping - Explicitly visible (exclude tables with .no-zebra class) */
+  .prose-handbook table:not(.no-zebra) tbody tr:nth-child(even) {
     @apply bg-black/5;
   }
 
-  /* Disable hover effect on table rows */
-  .prose-handbook tbody tr:hover {
+  /* Disable hover effect on table rows (exclude no-zebra tables) */
+  .prose-handbook table:not(.no-zebra) tbody tr:hover {
     background-color: inherit;
   }
-  .prose-handbook tbody tr:nth-child(even):hover {
+  .prose-handbook table:not(.no-zebra) tbody tr:nth-child(even):hover {
     @apply bg-black/5;
   }
 
