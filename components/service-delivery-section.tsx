@@ -26,8 +26,8 @@ function OverviewContent() {
             "Calendar and booking integrations",
             "Pipeline and CRM setup",
             "Client training and documentation"
-          ].map((item, i) => (
-            <li key={i} className="flex items-start gap-3 text-base text-foreground/80">
+          ].map((item) => (
+            <li key={item} className="flex items-start gap-3 text-base text-foreground/80">
               <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
               {item}
             </li>
@@ -52,7 +52,7 @@ function OverviewContent() {
               { phase: "Phase 4: Handoff", desc: "Training, documentation, go-live" },
               { phase: "Phase 5: Retainer", desc: "Monthly optimization and support" }
             ].map((row, i) => (
-              <tr key={i} className={cn("border-b border-border last:border-0", i % 2 === 1 && "bg-muted/30")}>
+              <tr key={row.phase} className={cn("border-b border-border last:border-0", i % 2 === 1 && "bg-muted/30")}>
                 <td className="px-4 py-3 font-medium">{row.phase}</td>
                 <td className="px-4 py-3 text-foreground/80">{row.desc}</td>
               </tr>
@@ -149,8 +149,8 @@ function Phase1Content() {
       <div>
         <h3 className="font-semibold text-foreground mb-3 pb-2 border-b border-border/60">Lead Sources</h3>
         <ul className="space-y-2">
-          {["Paid advertising (Facebook, Google)", "Website inquiries", "Referrals"].map((item, i) => (
-            <li key={i} className="flex items-start gap-3 text-base text-foreground/80">
+          {["Paid advertising (Facebook, Google)", "Website inquiries", "Referrals"].map((item) => (
+            <li key={item} className="flex items-start gap-3 text-base text-foreground/80">
               <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
               {item}
             </li>
@@ -186,9 +186,11 @@ function Phase2Content() {
             "Review onboarding form requirements",
             "Set communication expectations",
             "Schedule weekly check-in calls"
-          ].map((item, i) => (
-            <li key={i} className="flex items-start gap-3 text-base text-foreground/80">
-              <span className="w-6 h-6 rounded-full bg-primary/10 text-foreground flex items-center justify-center text-sm font-medium shrink-0">{i + 1}</span>
+          ].map((item, stepNumber) => (
+            <li key={item} className="flex items-start gap-3 text-base text-foreground/80">
+              <span className="w-6 h-6 rounded-full bg-primary/10 text-foreground flex items-center justify-center text-sm font-medium shrink-0">
+                {stepNumber + 1}
+              </span>
               {item}
             </li>
           ))}
@@ -224,7 +226,7 @@ function Phase2Content() {
               { item: "Target Audience", details: "Ideal client profile, demographics, pain points" },
               { item: "Access Credentials", details: "Domain registrar, hosting, existing tools" }
             ].map((row, i) => (
-              <tr key={i} className={cn("border-b border-border last:border-0", i % 2 === 1 && "bg-muted/30")}>
+              <tr key={row.item} className={cn("border-b border-border last:border-0", i % 2 === 1 && "bg-muted/30")}>
                 <td className="px-4 py-3 font-medium">{row.item}</td>
                 <td className="px-4 py-3 text-foreground/80">{row.details}</td>
               </tr>
@@ -284,8 +286,8 @@ function Phase3Content() {
           <div>
             <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-3">We Deliver</p>
             <ul className="space-y-2">
-              {week.delivers.map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-foreground/90">
+              {week.delivers.map((item) => (
+                <li key={item} className="flex items-start gap-2 text-sm text-foreground/90">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
                   {item}
                 </li>
@@ -295,8 +297,8 @@ function Phase3Content() {
           <div>
             <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-3">Client Provides</p>
             <ul className="space-y-2">
-              {week.clientProvides.map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-foreground/90">
+              {week.clientProvides.map((item) => (
+                <li key={item} className="flex items-start gap-2 text-sm text-foreground/90">
                   <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/60 mt-1.5 shrink-0" />
                   {item}
                 </li>
@@ -340,8 +342,8 @@ function Phase4Content() {
             "Monitoring workflows and automations",
             "Viewing reports and analytics",
             "Common troubleshooting"
-          ].map((item, i) => (
-            <li key={i} className="flex items-start gap-3 text-base text-foreground/80">
+          ].map((item) => (
+            <li key={item} className="flex items-start gap-3 text-base text-foreground/80">
               <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
               {item}
             </li>
@@ -358,8 +360,8 @@ function Phase4Content() {
             "Login credentials (securely shared)",
             "Integration details",
             "Troubleshooting guide"
-          ].map((item, i) => (
-            <li key={i} className="flex items-start gap-3 text-base text-foreground/80">
+          ].map((item) => (
+            <li key={item} className="flex items-start gap-3 text-base text-foreground/80">
               <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
               {item}
             </li>
@@ -376,8 +378,8 @@ function Phase4Content() {
             "Project marked complete in system",
             "Retainer discussion (if applicable)",
             "30-day follow-up scheduled"
-          ].map((item, i) => (
-            <div key={i} className="flex items-center gap-3 p-2 rounded hover:bg-muted/50 transition-colors group">
+          ].map((item) => (
+            <div key={item} className="flex items-center gap-3 p-2 rounded hover:bg-muted/50 transition-colors group">
               <div className="w-5 h-5 border border-primary/50 rounded shrink-0 group-hover:border-primary transition-colors bg-background" />
               <span className="text-base text-foreground/80">{item}</span>
             </div>
@@ -411,7 +413,7 @@ function Phase5Content() {
               { service: "System Updates", desc: "Workflow tweaks, new sequences, page updates" },
               { service: "Priority Support", desc: "Fast response times and troubleshooting" }
             ].map((row, i) => (
-              <tr key={i} className={cn("border-b border-border last:border-0", i % 2 === 1 && "bg-muted/30")}>
+              <tr key={row.service} className={cn("border-b border-border last:border-0", i % 2 === 1 && "bg-muted/30")}>
                 <td className="px-4 py-3 font-medium">{row.service}</td>
                 <td className="px-4 py-3 text-foreground/80">{row.desc}</td>
               </tr>
@@ -436,7 +438,7 @@ function Phase5Content() {
               { type: "Review feedback", time: "48 hours maximum" },
               { type: "Weekly status update", time: "Every Friday by 5 PM" }
             ].map((row, i) => (
-              <tr key={i} className={cn("border-b border-border last:border-0", i % 2 === 1 && "bg-muted/30")}>
+              <tr key={row.type} className={cn("border-b border-border last:border-0", i % 2 === 1 && "bg-muted/30")}>
                 <td className={cn("px-4 py-3 font-medium", row.urgent && "text-destructive")}>{row.type}</td>
                 <td className="px-4 py-3 text-foreground/80">{row.time}</td>
               </tr>
@@ -453,8 +455,8 @@ function Phase5Content() {
             { label: "Urgent", value: "Messenger / Phone", urgent: true },
             { label: "Project Updates", value: "Client portal" },
             { label: "Meetings", value: "Zoom / Google Meet" }
-          ].map((item, i) => (
-            <li key={i} className="flex items-start gap-3 text-base text-foreground/80">
+          ].map((item) => (
+            <li key={`${item.label}-${item.value}`} className="flex items-start gap-3 text-base text-foreground/80">
               <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
               <span><span className={cn("font-medium", item.urgent ? "text-destructive" : "text-foreground")}>{item.label}:</span> {item.value}</span>
             </li>

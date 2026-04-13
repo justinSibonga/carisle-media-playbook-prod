@@ -67,9 +67,9 @@ export default function UpdatesPage() {
 
         {/* Updates List */}
         <div className="space-y-12">
-          {updates.map((update, idx) => (
+          {updates.map((update) => (
             <article 
-              key={idx}
+              key={update.date}
               className="pb-12 border-b border-border last:border-b-0"
             >
               {/* Date & Author */}
@@ -96,9 +96,9 @@ export default function UpdatesPage() {
                   What&apos;s Changed
                 </h3>
                 <ul className="space-y-2">
-                  {update.changes.map((change, changeIdx) => (
+                  {update.changes.map((change) => (
                     <li 
-                      key={changeIdx}
+                      key={change}
                       className="flex items-start gap-3 text-sm text-foreground/80"
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" />

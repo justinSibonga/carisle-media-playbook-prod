@@ -5,8 +5,7 @@ import { CheckmarkCircle01Icon, Alert01Icon, CancelCircleIcon } from "@hugeicons
 import { PlaybookPageLayout } from "@/components/playbook-page-layout";
 import { FolderTabs } from "@/components/ui/folder-tabs";
 
-export default function HRAdminCoordinatorScorecardPage() {
-  const tabs = [
+const HR_ADMIN_COORDINATOR_TABS = [
     {
       key: "purpose",
       label: "1. Purpose",
@@ -59,8 +58,8 @@ export default function HRAdminCoordinatorScorecardPage() {
                 "Policies are documented, communicated, and actually followed",
                 "Admin work does not interrupt leadership focus",
                 "The Founder does not need to review routine HR or admin decisions",
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3 p-3 rounded-lg border border-border bg-card">
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-3 p-3 rounded-lg border border-border bg-card">
                   <HugeiconsIcon icon={CheckmarkCircle01Icon} className="w-5 h-5 text-status-success shrink-0 mt-0.5" />
                   <span className="text-sm">{item}</span>
                 </div>
@@ -78,8 +77,8 @@ export default function HRAdminCoordinatorScorecardPage() {
                 "People issues turning into Founder problems",
                 "Compliance or documentation risks",
                 "\"Small admin things\" consuming leadership time",
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3 p-3 rounded-lg border border-destructive/30 bg-destructive/5">
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-3 p-3 rounded-lg border border-destructive/30 bg-destructive/5">
                   <HugeiconsIcon icon={CancelCircleIcon} className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
                   <span className="text-sm">{item}</span>
                 </div>
@@ -291,8 +290,8 @@ export default function HRAdminCoordinatorScorecardPage() {
                     { label: "Judgment", desc: "Handles routine decisions confidently within policy and SOPs." },
                     { label: "Clarity & Documentation", desc: "Keeps records, policies, and communication clear and accessible." },
                     { label: "Confidentiality", desc: "Handles sensitive information responsibly." },
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3 text-sm">
+                  ].map((item) => (
+                    <div key={item.label} className="flex items-start gap-3 text-sm">
                       <HugeiconsIcon icon={CheckmarkCircle01Icon} className="w-4 h-4 text-status-success shrink-0 mt-0.5" />
                       <div>
                         <span className="font-medium">{item.label}:</span>{" "}
@@ -315,8 +314,8 @@ export default function HRAdminCoordinatorScorecardPage() {
                     "Escalating people issues without trying to resolve them",
                     "Unclear or undocumented decisions",
                     "Making HR feel chaotic or reactive",
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3 text-sm">
+                  ].map((item) => (
+                    <div key={item} className="flex items-start gap-3 text-sm">
                       <HugeiconsIcon icon={Alert01Icon} className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                       <span>{item}</span>
                     </div>
@@ -482,7 +481,9 @@ export default function HRAdminCoordinatorScorecardPage() {
         </div>
       )
     }
-  ];
+];
+
+export default function HRAdminCoordinatorScorecardPage() {
 
   return (
     <PlaybookPageLayout>
@@ -517,7 +518,7 @@ export default function HRAdminCoordinatorScorecardPage() {
         </table>
 
         {/* Folder Tabs */}
-        <FolderTabs tabs={tabs} defaultTab="purpose" />
+        <FolderTabs tabs={HR_ADMIN_COORDINATOR_TABS} defaultTab="purpose" />
 
         {/* Signature Section */}
         <section className="border-t border-border pt-8 mt-12">

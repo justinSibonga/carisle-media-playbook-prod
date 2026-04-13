@@ -3,24 +3,87 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Menu01Icon, Cancel01Icon, ArrowRight01Icon, Search01Icon } from "@hugeicons/core-free-icons";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useReducer, useRef, useState } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import { NAV_SECTIONS, EXPANDABLE_SECTIONS } from "@/lib/navigation";
 import { SearchDialog } from "@/components/search-dialog";
+import { AnimatePresence, LazyMotion, domAnimation, m, useReducedMotion } from "@/lib/motion";
+
+type SidebarState = {
+  isOpen: boolean;
+  isSearchOpen: boolean;
+  isLogoutOpen: boolean;
+  expandedSections: string[];
+  isCollapsed: boolean;
+};
+
+type SidebarAction =
+  | { type: "toggleOpen" }
+  | { type: "setOpen"; payload: boolean }
+  | { type: "setSearchOpen"; payload: boolean }
+  | { type: "setLogoutOpen"; payload: boolean }
+  | { type: "toggleCollapse" }
+  | { type: "collapseAll" }
+  | { type: "toggleSection"; payload: string };
+
+const INITIAL_SIDEBAR_STATE: SidebarState = {
+  isOpen: false,
+  isSearchOpen: false,
+  isLogoutOpen: false,
+  expandedSections: [],
+  isCollapsed: false,
+};
+
+function sidebarReducer(state: SidebarState, action: SidebarAction): SidebarState {
+  switch (action.type) {
+    case "toggleOpen":
+      return { ...state, isOpen: !state.isOpen };
+    case "setOpen":
+      return { ...state, isOpen: action.payload };
+    case "setSearchOpen":
+      return { ...state, isSearchOpen: action.payload };
+    case "setLogoutOpen":
+      return { ...state, isLogoutOpen: action.payload };
+    case "toggleCollapse":
+      return {
+        ...state,
+        isCollapsed: !state.isCollapsed,
+        expandedSections: state.isCollapsed ? state.expandedSections : [],
+      };
+    case "collapseAll":
+      return { ...state, expandedSections: [] };
+    case "toggleSection":
+      if (state.isCollapsed) {
+        return {
+          ...state,
+          isCollapsed: false,
+          expandedSections: [action.payload],
+        };
+      }
+
+      return {
+        ...state,
+        expandedSections: state.expandedSections.includes(action.payload) ? [] : [action.payload],
+      };
+    default:
+      return state;
+  }
+}
 
 // User Menu Component
 function UserMenu({ 
   session, 
   isCollapsed,
-  onSignOut 
+  onSignOut,
+  shouldReduceMotion,
 }: { 
   session: { user?: { name?: string | null; email?: string | null; image?: string | null } };
   isCollapsed: boolean;
   onSignOut: () => void;
+  shouldReduceMotion: boolean;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -57,12 +120,13 @@ function UserMenu({
         title={isCollapsed ? user.name || user.email || "User" : undefined}
       >
         {user.image ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={user.image}
             alt={user.name || "User"}
-            style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover' }}
-            className="ring-2 ring-border group-hover:ring-primary/30 transition-all"
+            width={40}
+            height={40}
+            sizes="40px"
+            className="ring-2 ring-border group-hover:ring-primary/30 transition-all rounded-full object-cover"
             referrerPolicy="no-referrer"
           />
         ) : (
@@ -104,11 +168,11 @@ function UserMenu({
 
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 8, scale: 0.96 }}
+          <m.div
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 8, scale: 0.96 }}
-            transition={{ duration: 0.15 }}
+            exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8, scale: 0.96 }}
+            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.15 }}
             className={cn(
               "absolute bottom-full mb-2 bg-card border border-border rounded-lg shadow-lg overflow-hidden z-50",
               isCollapsed ? "left-0 w-48" : "left-0 right-0"
@@ -142,7 +206,7 @@ function UserMenu({
               </svg>
               Sign out
             </button>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </div>
@@ -152,10 +216,12 @@ function UserMenu({
 // Logout Confirmation Dialog
 function LogoutDialog({ 
   open, 
-  onOpenChange 
+  onOpenChange,
+  shouldReduceMotion,
 }: { 
   open: boolean; 
   onOpenChange: (open: boolean) => void;
+  shouldReduceMotion: boolean;
 }) {
   const handleLogout = () => {
     signOut({ callbackUrl: "/" });
@@ -166,18 +232,20 @@ function LogoutDialog({
     <AnimatePresence>
       {open && (
         <>
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={shouldReduceMotion ? { duration: 0 } : undefined}
             className="fixed inset-0 z-60 bg-foreground/80 backdrop-blur-sm"
             onClick={() => onOpenChange(false)}
             aria-hidden="true"
           />
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: -20 }}
+          <m.div
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.95, y: -20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: -20 }}
+            exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.95, y: -20 }}
+            transition={shouldReduceMotion ? { duration: 0 } : undefined}
             className="fixed left-[50%] top-[50%] z-61 w-full max-w-sm -translate-x-1/2 -translate-y-1/2 p-4"
             role="dialog"
             aria-modal="true"
@@ -221,7 +289,7 @@ function LogoutDialog({
                 </button>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </>
       )}
     </AnimatePresence>
@@ -232,29 +300,15 @@ function LogoutDialog({
 export function Sidebar() {
   const pathname = usePathname();
   const { data: session } = useSession();
-  const [isOpen, setIsOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isLogoutOpen, setIsLogoutOpen] = useState(false);
-  const [expandedSections, setExpandedSections] = useState<string[]>([]);
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  
-  const toggleSection = (name: string) => {
-    if (isCollapsed) {
-      setIsCollapsed(false);
-      setExpandedSections([name]);
-      return;
-    }
-    setExpandedSections(prev => {
-      const newState = prev.includes(name) ? [] : [name];
-      return newState;
-    });
-  };
+  const shouldReduceMotion = useReducedMotion() ?? false;
+  const [state, dispatch] = useReducer(sidebarReducer, INITIAL_SIDEBAR_STATE);
+  const { isOpen, isSearchOpen, isLogoutOpen, expandedSections, isCollapsed } = state;
   
   const prevPathname = React.useRef(pathname);
   useEffect(() => {
     if (prevPathname.current !== pathname) {
       prevPathname.current = pathname;
-      const timer = setTimeout(() => setIsOpen(false), 0);
+      const timer = setTimeout(() => dispatch({ type: "setOpen", payload: false }), 0);
       return () => clearTimeout(timer);
     }
   }, [pathname]);
@@ -262,16 +316,17 @@ export function Sidebar() {
   // Listen for tour collapse event
   useEffect(() => {
     const handleCollapse = () => {
-      setExpandedSections([]);
+      dispatch({ type: "collapseAll" });
     };
     window.addEventListener('collapse-sidebar-sections', handleCollapse);
     return () => window.removeEventListener('collapse-sidebar-sections', handleCollapse);
   }, []);
 
   return (
-    <>
+    <LazyMotion features={domAnimation}>
+      <>
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => dispatch({ type: "toggleOpen" })}
         className={cn(
           "fixed top-4 left-4 z-50 p-3 md:hidden rounded-lg",
           "bg-card border border-border text-foreground"
@@ -282,18 +337,22 @@ export function Sidebar() {
 
       <AnimatePresence>
         {isOpen && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={shouldReduceMotion ? { duration: 0 } : undefined}
             className="fixed inset-0 z-40 bg-background/60 backdrop-blur-sm md:hidden"
-            onClick={() => setIsOpen(false)}
+            onClick={() => dispatch({ type: "setOpen", payload: false })}
           />
         )}
       </AnimatePresence>
 
-      <motion.aside
+      <m.aside
         id="tour-sidebar"
+        initial={shouldReduceMotion ? false : { opacity: 0, x: -12 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.2 }}
         className={cn(
           "fixed inset-y-0 left-0 z-50",
           "bg-background text-foreground border-r border-border",
@@ -308,7 +367,7 @@ export function Sidebar() {
           
           {/* Collapse Toggle - Centered Vertical */}
           <button
-            onClick={() => setIsCollapsed(!isCollapsed)}
+            onClick={() => dispatch({ type: "toggleCollapse" })}
             className="hidden md:flex absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-background border border-border rounded-full items-center justify-center text-muted-foreground hover:text-foreground shadow-sm z-50 cursor-pointer hover:bg-muted/50 transition-colors"
           >
             <HugeiconsIcon icon={ArrowRight01Icon} size={14} className={cn("transition-transform duration-300", !isCollapsed && "rotate-180")} />
@@ -322,7 +381,8 @@ export function Sidebar() {
                         <Image 
                             src="/cm-icon.png" 
                             alt="Carisle Media" 
-                            fill 
+                            fill
+                            sizes="32px"
                             className="object-contain" 
                         />
                     </div>
@@ -341,7 +401,7 @@ export function Sidebar() {
 
             <button
               id="tour-search"
-              onClick={() => setIsSearchOpen(true)}
+              onClick={() => dispatch({ type: "setSearchOpen", payload: true })}
               aria-label="Search"
               className={cn(
                 "mt-6 flex items-center gap-2 rounded-lg border border-border bg-muted/50 text-sm text-muted-foreground transition-all duration-200 hover:bg-muted hover:border-border hover:shadow-sm",
@@ -373,7 +433,7 @@ export function Sidebar() {
                     key={item.href}
                     href={item.href}
                     id={item.name === "Organizational Chart" ? "tour-nav-org-chart" : item.name === "KPI Dictionary" ? "tour-nav-kpi-dictionary" : undefined}
-                    onClick={() => setExpandedSections([])}
+                    onClick={() => dispatch({ type: "collapseAll" })}
                     className={cn(
                       "flex items-center gap-3 rounded-lg transition-all duration-200 relative group",
                       isCollapsed ? "justify-center p-2.5" : "px-3 py-2.5",
@@ -415,7 +475,7 @@ export function Sidebar() {
                   <div key={section.name} className="flex flex-col gap-1">
                     <button
                       id={`tour-nav-${section.name.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'and')}`}
-                      onClick={() => toggleSection(section.name)}
+                      onClick={() => dispatch({ type: "toggleSection", payload: section.name })}
                       title={isCollapsed ? section.name : undefined}
                       className={cn(
                         "flex items-center w-full gap-3 rounded-lg transition-all duration-200 relative group",
@@ -448,11 +508,11 @@ export function Sidebar() {
                     
                     <AnimatePresence>
                       {isExpanded && !isCollapsed && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
+                        <m.div
+                          initial={shouldReduceMotion ? { opacity: 0 } : { height: 0, opacity: 0 }}
                           animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.3, ease: "easeInOut" }}
+                          exit={shouldReduceMotion ? { opacity: 0 } : { height: 0, opacity: 0 }}
+                          transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.3, ease: "easeInOut" }}
                           className="overflow-hidden"
                         >
                           <div className="flex flex-col gap-0.5 mt-1 ml-6 pl-4 border-l-2 border-border">
@@ -479,7 +539,7 @@ export function Sidebar() {
                               );
                             })}
                           </div>
-                        </motion.div>
+                        </m.div>
                       )}
                     </AnimatePresence>
                   </div>
@@ -497,15 +557,24 @@ export function Sidebar() {
               <UserMenu 
                 session={session} 
                 isCollapsed={isCollapsed} 
-                onSignOut={() => setIsLogoutOpen(true)} 
+                onSignOut={() => dispatch({ type: "setLogoutOpen", payload: true })}
+                shouldReduceMotion={shouldReduceMotion}
               />
             </div>
           )}
         </div>
-      </motion.aside>
+      </m.aside>
 
-      <SearchDialog open={isSearchOpen} onOpenChange={setIsSearchOpen} />
-      <LogoutDialog open={isLogoutOpen} onOpenChange={setIsLogoutOpen} />
-    </>
+      <SearchDialog
+        open={isSearchOpen}
+        onOpenChange={(open) => dispatch({ type: "setSearchOpen", payload: open })}
+      />
+      <LogoutDialog
+        open={isLogoutOpen}
+        onOpenChange={(open) => dispatch({ type: "setLogoutOpen", payload: open })}
+        shouldReduceMotion={shouldReduceMotion}
+      />
+      </>
+    </LazyMotion>
   );
 }

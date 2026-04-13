@@ -44,8 +44,8 @@ export function PerformanceCareerSection() {
               "Adhere to company policies and professionalism",
               "Work effectively with colleagues",
               "Show willingness to learn and adapt",
-            ].map((item, i) => (
-              <li key={i} className="flex items-start gap-2 text-foreground/80">
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-2 text-foreground/80">
                 <span className="text-status-success mt-1">▶</span> {item}
               </li>
             ))}
@@ -170,8 +170,8 @@ export function PerformanceCareerSection() {
               "Access to online learning materials",
               "Participation in webinars and seminars",
               "Cross-training for additional skills",
-            ].map((item, i) => (
-              <li key={i} className="flex items-start gap-2 text-foreground/80">
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-2 text-foreground/80">
                 <span className="text-status-success mt-1">▶</span> {item}
               </li>
             ))}

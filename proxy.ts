@@ -5,9 +5,7 @@ export default auth((req) => {
 
   // Allow public routes (root login page and auth API)
   const publicPaths = ["/", "/api/auth"];
-  const isPublicPath = publicPaths.some(path =>
-    pathname === path || pathname.startsWith("/api/auth")
-  );
+  const isPublicPath = publicPaths.some((path) => pathname === path || pathname.startsWith("/api/auth"));
 
   if (isPublicPath) {
     return;

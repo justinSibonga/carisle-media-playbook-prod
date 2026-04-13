@@ -5,8 +5,7 @@ import { CheckmarkCircle01Icon, Alert01Icon, CancelCircleIcon } from "@hugeicons
 import { PlaybookPageLayout } from "@/components/playbook-page-layout";
 import { FolderTabs } from "@/components/ui/folder-tabs";
 
-export default function WebDeveloperScorecardPage() {
-  const tabs = [
+const WEB_DEVELOPER_TABS = [
     {
       key: "purpose",
       label: "1. Purpose",
@@ -61,8 +60,8 @@ export default function WebDeveloperScorecardPage() {
                 "Marketing and Ops never wait on \"technical stuff\"",
                 "Deliverables are finished, tested, and ready — not \"almost done\"",
                 "The Founder never needs to debug, build, or fix technical work",
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3 p-3 rounded-lg border border-border bg-card">
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-3 p-3 rounded-lg border border-border bg-card">
                   <HugeiconsIcon icon={CheckmarkCircle01Icon} className="w-5 h-5 text-status-success shrink-0 mt-0.5" />
                   <span className="text-sm">{item}</span>
                 </div>
@@ -80,8 +79,8 @@ export default function WebDeveloperScorecardPage() {
                 "Marketing execution being blocked by dev work",
                 "Founder jumping in to solve technical problems",
                 "Rework due to poor testing or incomplete builds",
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3 p-3 rounded-lg border border-destructive/30 bg-destructive/5">
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-3 p-3 rounded-lg border border-destructive/30 bg-destructive/5">
                   <HugeiconsIcon icon={CancelCircleIcon} className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
                   <span className="text-sm">{item}</span>
                 </div>
@@ -286,8 +285,8 @@ export default function WebDeveloperScorecardPage() {
                     { label: "Quality Mindset", desc: "Delivers clean, functional, and reliable work." },
                     { label: "Clear Communication", desc: "Explains technical status and issues in plain language." },
                     { label: "Continuous Learning", desc: "Actively improves technical skills without reminders." },
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3 text-sm">
+                  ].map((item) => (
+                    <div key={item.label} className="flex items-start gap-3 text-sm">
                       <HugeiconsIcon icon={CheckmarkCircle01Icon} className="w-4 h-4 text-status-success shrink-0 mt-0.5" />
                       <div>
                         <span className="font-medium">{item.label}:</span>{" "}
@@ -310,8 +309,8 @@ export default function WebDeveloperScorecardPage() {
                     "Letting tasks sit without updates",
                     "Escalating without trying solutions",
                     "Founder stepping in to fix technical work",
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3 text-sm">
+                  ].map((item) => (
+                    <div key={item} className="flex items-start gap-3 text-sm">
                       <HugeiconsIcon icon={Alert01Icon} className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                       <span>{item}</span>
                     </div>
@@ -479,7 +478,9 @@ export default function WebDeveloperScorecardPage() {
         </div>
       )
     }
-  ];
+];
+
+export default function WebDeveloperScorecardPage() {
 
   return (
     <PlaybookPageLayout>
@@ -514,7 +515,7 @@ export default function WebDeveloperScorecardPage() {
         </table>
 
         {/* Folder Tabs */}
-        <FolderTabs tabs={tabs} defaultTab="purpose" />
+        <FolderTabs tabs={WEB_DEVELOPER_TABS} defaultTab="purpose" />
 
         {/* Signature Section */}
         <section className="border-t border-border pt-8 mt-12">

@@ -36,8 +36,8 @@ function KpiTable({ data, categoryTitle }: { data: KpiData[]; categoryTitle?: st
           </tr>
         </thead>
         <tbody>
-          {data.map((row, index) => (
-            <tr key={index} className="border-b border-border hover:bg-muted/30">
+          {data.map((row) => (
+            <tr key={row.kpi} className="border-b border-border hover:bg-muted/30">
               <td className="py-2.5 px-4 text-sm align-top">
                 <div>{row.kpi}</div>
                 <div className="text-xs text-muted-foreground lg:hidden mt-1">{row.definition}</div>
@@ -58,8 +58,8 @@ function KpiTable({ data, categoryTitle }: { data: KpiData[]; categoryTitle?: st
 function SectionedKpiTable({ sections }: { sections: { title: string; data: KpiData[] }[] }) {
   return (
     <div className="space-y-8">
-      {sections.map((section, idx) => (
-        <KpiTable key={idx} data={section.data} categoryTitle={section.title} />
+      {sections.map((section) => (
+        <KpiTable key={section.title} data={section.data} categoryTitle={section.title} />
       ))}
     </div>
   );
@@ -78,8 +78,8 @@ function QuickRefTable({ title, data }: { title: string; data: KpiData[] }) {
           </tr>
         </thead>
         <tbody>
-          {data.map((row, index) => (
-            <tr key={index} className="border-b border-border hover:bg-muted/30">
+          {data.map((row) => (
+            <tr key={row.kpi} className="border-b border-border hover:bg-muted/30">
               <td className="py-2.5 px-4 text-sm">{row.kpi}</td>
               <td className="py-2.5 px-4 text-sm text-center font-semibold text-accent w-28">{row.target}</td>
             </tr>
@@ -108,8 +108,8 @@ function ByRoleTable({ title, count, data }: { title: string; count: number; dat
           </tr>
         </thead>
         <tbody>
-          {data.map((row, index) => (
-            <tr key={index} className="border-b border-border hover:bg-muted/30">
+          {data.map((row) => (
+            <tr key={row.kpi} className="border-b border-border hover:bg-muted/30">
               <td className="py-2.5 px-4 text-sm">{row.kpi}</td>
               <td className="py-2.5 px-4 text-sm text-center text-muted-foreground">{row.frequency}</td>
               <td className="py-2.5 px-4 text-sm text-center font-semibold text-accent">{row.target}</td>

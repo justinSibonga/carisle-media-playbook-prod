@@ -332,15 +332,15 @@ function QualityChecklistsSection() {
       description: checklist.description,
       content: (
         <div>
-          {checklist.sections.map((section, sIndex) => (
-            <div key={sIndex} className="mb-6 last:mb-0">
+          {checklist.sections.map((section) => (
+            <div key={section.title} className="mb-6 last:mb-0">
               <h3 className="font-semibold text-primary mb-3 pb-2 border-b border-border/60">
                 {section.title}
               </h3>
               <div className="space-y-2">
-                {section.items.map((item, iIndex) => (
+                {section.items.map((item) => (
                   <div
-                    key={iIndex}
+                    key={item}
                     className="flex items-start gap-3 p-2 rounded hover:bg-muted/50 transition-colors group"
                   >
                     <div className="w-5 h-5 border border-primary/50 rounded shrink-0 mt-0.5 group-hover:border-primary transition-colors bg-background" />

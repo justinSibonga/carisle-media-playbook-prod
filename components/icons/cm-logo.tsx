@@ -20,6 +20,7 @@ export function CMLogo({ variant = "full", className, priority = false }: CMLogo
           src="/cm-icon.png"
           alt="Carisle Media"
           fill
+          sizes="32px"
           className="object-contain"
           priority={priority}
         />

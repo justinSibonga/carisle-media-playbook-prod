@@ -5,8 +5,7 @@ import { CheckmarkCircle01Icon, Alert01Icon, CancelCircleIcon } from "@hugeicons
 import { PlaybookPageLayout } from "@/components/playbook-page-layout";
 import { FolderTabs } from "@/components/ui/folder-tabs";
 
-export default function FinanceCoordinatorScorecardPage() {
-  const tabs = [
+const FINANCE_COORDINATOR_TABS = [
     {
       key: "purpose",
       label: "1. Purpose",
@@ -60,8 +59,8 @@ export default function FinanceCoordinatorScorecardPage() {
                 "Meetings with the accountant are scheduled, prepared, and documented",
                 "Tax filings are tracked, reminded, and confirmed as completed",
                 "The Founder never needs to ask for financial data or status",
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3 p-3 rounded-lg border border-border bg-card">
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-3 p-3 rounded-lg border border-border bg-card">
                   <HugeiconsIcon icon={CheckmarkCircle01Icon} className="w-5 h-5 text-status-success shrink-0 mt-0.5" />
                   <span className="text-sm">{item}</span>
                 </div>
@@ -80,8 +79,8 @@ export default function FinanceCoordinatorScorecardPage() {
                 "Missed accountant deadlines",
                 "Financial surprises late in the month or quarter",
                 "Founder doing financial tracking herself",
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3 p-3 rounded-lg border border-destructive/30 bg-destructive/5">
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-3 p-3 rounded-lg border border-destructive/30 bg-destructive/5">
                   <HugeiconsIcon icon={CancelCircleIcon} className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
                   <span className="text-sm">{item}</span>
                 </div>
@@ -274,8 +273,8 @@ export default function FinanceCoordinatorScorecardPage() {
                     { label: "Reliability", desc: "Delivers reports consistently and on time." },
                     { label: "Clarity", desc: "Explains numbers clearly and simply." },
                     { label: "Confidentiality", desc: "Handles sensitive financial data responsibly." },
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3 text-sm">
+                  ].map((item) => (
+                    <div key={item.label} className="flex items-start gap-3 text-sm">
                       <HugeiconsIcon icon={CheckmarkCircle01Icon} className="w-4 h-4 text-status-success shrink-0 mt-0.5" />
                       <div>
                         <span className="font-medium">{item.label}:</span>{" "}
@@ -298,8 +297,8 @@ export default function FinanceCoordinatorScorecardPage() {
                     "Founder needing to calculate or verify numbers",
                     "Surprise tax or compliance issues",
                     "Unclear or undocumented financial status",
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3 text-sm">
+                  ].map((item) => (
+                    <div key={item} className="flex items-start gap-3 text-sm">
                       <HugeiconsIcon icon={Alert01Icon} className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                       <span>{item}</span>
                     </div>
@@ -467,7 +466,9 @@ export default function FinanceCoordinatorScorecardPage() {
         </div>
       )
     }
-  ];
+];
+
+export default function FinanceCoordinatorScorecardPage() {
 
   return (
     <PlaybookPageLayout>
@@ -502,7 +503,7 @@ export default function FinanceCoordinatorScorecardPage() {
         </table>
 
         {/* Folder Tabs */}
-        <FolderTabs tabs={tabs} defaultTab="purpose" />
+        <FolderTabs tabs={FINANCE_COORDINATOR_TABS} defaultTab="purpose" />
 
         {/* Signature Section */}
         <section className="border-t border-border pt-8 mt-12">

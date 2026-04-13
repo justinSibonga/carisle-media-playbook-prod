@@ -92,8 +92,8 @@ export function WorkHoursAttendanceSection() {
               "Minutes beyond grace period = deduction",
               "Frequent tardiness = disciplinary action",
               "Ensure time records are accurate",
-            ].map((item, i) => (
-              <li key={i} className="flex items-start gap-2 text-foreground/80">
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-2 text-foreground/80">
                 <span className="text-status-success mt-1">▶</span> {item}
               </li>
             ))}
@@ -249,8 +249,8 @@ export function WorkHoursAttendanceSection() {
               "Submit SOD and EOD reports daily",
               "Attend all scheduled virtual meetings on time",
               "Report technical issues immediately",
-            ].map((item, i) => (
-              <li key={i} className="flex items-start gap-2 text-foreground/80">
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-2 text-foreground/80">
                 <span className="text-status-success mt-1">▶</span> {item}
               </li>
             ))}

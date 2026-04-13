@@ -1,12 +1,46 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useReducer } from "react";
 import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { HelpCircleIcon } from "@hugeicons/core-free-icons";
 
 const TOUR_STORAGE_KEY = "carisle-handbook-tour-seen";
 const MOBILE_BREAKPOINT = 768;
+
+type GuidedTourState = {
+  isMobile: boolean;
+  mounted: boolean;
+  run: boolean;
+};
+
+type GuidedTourAction =
+  | { type: "setViewport"; payload: boolean }
+  | { type: "setRun"; payload: boolean };
+
+const INITIAL_GUIDED_TOUR_STATE: GuidedTourState = {
+  isMobile: false,
+  mounted: false,
+  run: false,
+};
+
+function guidedTourReducer(state: GuidedTourState, action: GuidedTourAction): GuidedTourState {
+  switch (action.type) {
+    case "setViewport":
+      return {
+        ...state,
+        isMobile: action.payload,
+        mounted: true,
+      };
+    case "setRun":
+      return {
+        ...state,
+        run: action.payload,
+      };
+    default:
+      return state;
+  }
+}
 
 const tourSteps: Step[] = [
   {
@@ -85,54 +119,39 @@ const tourSteps: Step[] = [
 ];
 
 export function GuidedTour() {
-  const [run, setRun] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const mountedRef = useRef(false);
+  const [state, dispatch] = useReducer(guidedTourReducer, INITIAL_GUIDED_TOUR_STATE);
+  const { isMobile, mounted, run } = state;
 
-  // Detect mobile viewport and set mounted state
   useEffect(() => {
-    // Use a microtask to batch state updates and avoid cascading renders
-    const initialMobile = window.innerWidth < MOBILE_BREAKPOINT;
-    
-    // Batch both state updates together
-    Promise.resolve().then(() => {
-      setIsMobile(initialMobile);
-      setMounted(true);
-    });
-
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+      dispatch({ type: "setViewport", payload: window.innerWidth < MOBILE_BREAKPOINT });
     };
-    
+
+    checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Check for first-time tour on mount - only on desktop
   useEffect(() => {
-    if (mountedRef.current) return;
-    mountedRef.current = true;
-    
-    // Skip auto-tour on mobile since sidebar isn't visible
-    if (window.innerWidth < MOBILE_BREAKPOINT) return;
-    
+    if (!mounted || isMobile) return;
+
     const hasSeen = localStorage.getItem(TOUR_STORAGE_KEY);
-    if (!hasSeen) {
-      const timer = setTimeout(() => {
-        window.dispatchEvent(new CustomEvent('collapse-sidebar-sections'));
-        setRun(true);
-      }, 500);
-      return () => clearTimeout(timer);
-    }
-  }, []);
+    if (hasSeen) return;
+
+    const timer = setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('collapse-sidebar-sections'));
+      dispatch({ type: "setRun", payload: true });
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [isMobile, mounted]);
 
   const handleJoyrideCallback = (data: CallBackProps) => {
     const { status } = data;
     const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
 
     if (finishedStatuses.includes(status)) {
-      setRun(false);
+      dispatch({ type: "setRun", payload: false });
       localStorage.setItem(TOUR_STORAGE_KEY, "true");
     }
   };
@@ -144,7 +163,7 @@ export function GuidedTour() {
       return;
     }
     window.dispatchEvent(new CustomEvent('collapse-sidebar-sections'));
-    setRun(true);
+    dispatch({ type: "setRun", payload: true });
   };
 
   // Don't render until mounted to prevent hydration mismatch

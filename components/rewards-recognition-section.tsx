@@ -37,8 +37,8 @@ export function RewardsRecognitionSection() {
               "Professional Development Sponsorship",
               "Priority for Promotions and Leadership Roles",
               "Special Perks (time off, vouchers, celebrations)",
-            ].map((item, i) => (
-              <li key={i} className="flex items-start gap-2 text-foreground/80">
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-2 text-foreground/80">
                 <span className="text-status-success mt-1">▶</span> {item}
               </li>
             ))}
@@ -105,8 +105,8 @@ export function RewardsRecognitionSection() {
                 "Active employees & contractors",
                 "Candidates not with CM in past 12 months",
                 "Bonus after referral completes probation",
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3 text-sm">
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-3 text-sm">
                   <span className="text-status-success font-bold">•</span>
                   <span>{item}</span>
                 </div>
@@ -124,8 +124,8 @@ export function RewardsRecognitionSection() {
                 "Management-level positions",
                 "Direct family members",
                 "Former CM employees (<12 months)",
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3 text-sm">
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-3 text-sm">
                   <span className="text-destructive font-bold">•</span>
                   <span>{item}</span>
                 </div>
