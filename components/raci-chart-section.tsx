@@ -206,8 +206,8 @@ function RoleSection({ title, activities, total }: {
           </tr>
         </thead>
         <tbody>
-          {activities.map((item, idx) => (
-            <RoleActivityRow key={idx} activity={item.activity} category={item.category} />
+          {activities.map((item) => (
+            <RoleActivityRow key={item.activity} activity={item.activity} category={item.category} />
           ))}
           <tr className="bg-muted/30">
             <td colSpan={2} className="py-2 px-3 font-semibold text-xs">
@@ -557,82 +557,82 @@ function MarketingTechnicalContent() {
   );
 }
 
+const RACI_TABS = [
+  {
+    key: "operations",
+    label: "Operations",
+    title: "Daily, Weekly & Client Operations",
+    description: "Day-to-day activities, weekly cadence, and client project management responsibilities",
+    content: <OperationsContent />,
+  },
+  {
+    key: "finance-decisions",
+    label: "Finance & Decisions",
+    title: "Finance, Accounting & Founder Decisions",
+    description: "Financial operations and strategic decisions that require founder involvement",
+    content: <FinanceDecisionsContent />,
+  },
+  {
+    key: "marketing-technical-hr",
+    label: "Marketing, Tech & HR",
+    title: "Marketing, Technical & HR Operations",
+    description: "Marketing campaigns, web development, and people operations responsibilities",
+    content: <MarketingTechnicalContent />,
+  },
+  {
+    key: "founder-summary",
+    label: "Founder Summary",
+    title: "Founder's Involvement Summary",
+    description: "Only these items require Founder involvement - everything else is delegated",
+    content: <FounderSummaryContent />,
+  },
+  {
+    key: "by-role",
+    label: "By Role",
+    title: "Accountability by Role",
+    description: "Each role OWNS (A/R) their area completely",
+    content: <AccountabilityByRoleContent />,
+  },
+];
 
+const RACI_HASH_TO_TAB_MAP: Record<string, string> = {
+  "founder-accountable": "founder-summary",
+  "founder-responsible": "founder-summary",
+  "founder-consulted": "founder-summary",
+  "founder-informed": "founder-summary",
+};
 
-export function RaciChartSection() {
-  const raciTabs = [
-    {
-      key: "operations",
-      label: "Operations",
-      title: "Daily, Weekly & Client Operations",
-      description: "Day-to-day activities, weekly cadence, and client project management responsibilities",
-      content: <OperationsContent />
-    },
-    {
-      key: "finance-decisions",
-      label: "Finance & Decisions",
-      title: "Finance, Accounting & Founder Decisions",
-      description: "Financial operations and strategic decisions that require founder involvement",
-      content: <FinanceDecisionsContent />
-    },
-    {
-      key: "marketing-technical-hr",
-      label: "Marketing, Tech & HR",
-      title: "Marketing, Technical & HR Operations",
-      description: "Marketing campaigns, web development, and people operations responsibilities",
-      content: <MarketingTechnicalContent />
-    },
-    {
-      key: "founder-summary",
-      label: "Founder Summary",
-      title: "Founder's Involvement Summary",
-      description: "Only these items require Founder involvement - everything else is delegated",
-      content: <FounderSummaryContent />
-    },
-    {
-      key: "by-role",
-      label: "By Role",
-      title: "Accountability by Role",
-      description: "Each role OWNS (A/R) their area completely",
-      content: <AccountabilityByRoleContent />
-    }
-  ];
-
-  // Hash to tab mapping for sections within tabs
-  const hashToTabMap: Record<string, string> = {
-    'founder-accountable': 'founder-summary',
-    'founder-responsible': 'founder-summary',
-    'founder-consulted': 'founder-summary',
-    'founder-informed': 'founder-summary',
-  };
-
-  // Handle hash navigation for non-tab sections
+function useScrollToNonTabHash() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.slice(1);
       if (!hash) return;
 
-      // Check if it's a section that's not in a tab
-      const nonTabSections = ['delegation-philosophy', 'raci-definitions', 'founders-limited-involvement', 'detailed-raci-matrix'];
+      const nonTabSections = [
+        "delegation-philosophy",
+        "raci-definitions",
+        "founders-limited-involvement",
+        "detailed-raci-matrix",
+      ];
+
       if (nonTabSections.includes(hash)) {
         const element = document.getElementById(hash);
         if (element) {
-          // Small delay to ensure page is rendered
           setTimeout(() => {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            element.scrollIntoView({ behavior: "smooth", block: "start" });
           }, 100);
         }
       }
     };
 
-    // Check hash on mount
     handleHashChange();
-
-    // Listen for hash changes
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
   }, []);
+}
 
+
+function renderRaciChartSectionContent() {
   return (
     <div className="animate-fade-in prose-handbook">
       {/* Header Block */}
@@ -987,8 +987,14 @@ export function RaciChartSection() {
           Complete responsibility assignments by department and function
         </p>
         
-        <FolderTabs tabs={raciTabs} defaultTab="operations" hashToTabMap={hashToTabMap} />
+        <FolderTabs tabs={RACI_TABS} defaultTab="operations" hashToTabMap={RACI_HASH_TO_TAB_MAP} />
       </section>
     </div>
   );
+}
+
+export function RaciChartSection() {
+  useScrollToNonTabHash();
+
+  return renderRaciChartSectionContent();
 }

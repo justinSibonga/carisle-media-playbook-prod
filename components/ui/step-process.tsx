@@ -19,7 +19,7 @@ export function StepProcess({ steps, className }: StepProcessProps) {
   return (
     <div className={cn("relative max-w-5xl mx-auto py-0!", className)}>
       {steps.map((step, index) => (
-        <div key={index} className="group relative flex gap-4 pb-6 last:pb-0">
+        <div key={step.title} className="group relative flex gap-4 pb-6 last:pb-0">
           {/* Connecting Line */}
           {index !== steps.length - 1 && (
             <div 
@@ -49,8 +49,8 @@ export function StepProcess({ steps, className }: StepProcessProps) {
                 {/* Badges */}
                 {step.badges && step.badges.length > 0 && (
                   <div className="flex flex-wrap gap-2 shrink-0 md:justify-end">
-                    {step.badges.map((badge, i) => (
-                      <span key={i} className={cn(
+                    {step.badges.map((badge) => (
+                      <span key={`${badge.text}-${badge.variant ?? "default"}`} className={cn(
                         "inline-flex items-center rounded-md px-2 py-0.5 text-[10px] uppercase tracking-wider font-bold ring-1 ring-inset",
                         badge.variant === "accent" ? "bg-accent/10 text-accent ring-accent/20" : 
                         badge.variant === "secondary" ? "bg-secondary text-secondary-foreground ring-secondary/20" :

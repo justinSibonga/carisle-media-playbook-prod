@@ -69,8 +69,8 @@ export function ResignationSeparationSection() {
               "Settle pending accountabilities",
               "Knowledge transfer to successors",
               "Complete exit interview with HR",
-            ].map((item, i) => (
-              <li key={i} className="flex items-start gap-2 text-foreground/80">
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-2 text-foreground/80">
                 <span className="text-status-success mt-1">▶</span> {item}
               </li>
             ))}

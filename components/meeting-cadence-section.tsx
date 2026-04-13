@@ -1,22 +1,139 @@
-// ✅ Server Component by default
+const MEETING_OVERVIEW_ROWS = [
+  ["Daily Standup", "Daily (async)", "5 min (SOD/EOD)", "All team", "Each person"],
+  ["Weekly Ops + Marketing", "Weekly", "30 min", "Ops + Marketing", "Ops Coord"],
+  ["Weekly All-Hands", "Weekly", "30-45 min", "All departments", "Ops Coord"],
+  ["Ad-Hoc / As-Needed", "As needed", "15-30 min", "Relevant people", "Requester"],
+  ["Client Weekly Check-in", "Weekly per client", "30 min", "Ops + Client", "Ops Coord"],
+  ["Monthly Review", "Monthly", "45-60 min", "Founder + 1", "Founder"],
+  ["Quarterly Planning", "Quarterly", "2-3 hours", "All team", "Founder"],
+] as const;
 
-export function MeetingCadenceSection() {
+const WEEKLY_OPS_AGENDA = [
+  ["5 min", "Client Status Quick Check", "Any urgent client issues or updates"],
+  ["10 min", "This Week's Deliverables", "What's due, who's doing what, dependencies"],
+  ["10 min", "Handoffs & Blockers", "Items passing between Ops <-> Marketing, any blockers"],
+  ["5 min", "Action Items", "Confirm who does what by when"],
+] as const;
+
+const ALL_HANDS_AGENDA = [
+  ["5 min", "Wins & Shoutouts", "Celebrate completed work, client feedback, team wins"],
+  ["10 min", "Department Updates", "Quick update from each dept (Ops, Marketing, Dev, Finance)"],
+  ["10 min", "Client Pipeline & Status", "Active clients, upcoming launches, new inquiries"],
+  ["10 min", "Cross-Dept Issues", "Issues needing multiple departments, decisions to make"],
+  ["5 min", "Announcements & Close", "Company news, upcoming events, action items recap"],
+] as const;
+
+const AD_HOC_MEETING_REASONS = [
+  "Urgent client issue that needs immediate discussion",
+  "Blocker that can't wait until next scheduled meeting",
+  "Complex problem that needs real-time collaboration",
+  "Decision that requires multiple people's input",
+];
+
+const AD_HOC_MEETING_RULES = [
+  "Must have a clear purpose stated in the invite",
+  "Keep to 15-30 min max",
+  "Document outcome/decision in relevant Lark channel",
+  "If it can be resolved async (Lark message), don't meet",
+];
+
+const MONTHLY_REVIEW_AGENDA = [
+  ["Review scorecard results", "10 min", "Walk through 4 components"],
+  ["Discuss wins", "10 min", "What went well, recognize achievements"],
+  ["Discuss growth areas", "15 min", "Where to improve, support needed"],
+  ["Set next month focus", "10 min", "1-2 specific development goals"],
+  ["Employee feedback", "10 min", "Their input on support, processes, team"],
+];
+
+const QUARTERLY_PLANNING_AGENDA = [
+  ["Review last quarter", "30 min", "What worked, what didn't, key metrics"],
+  ["Company updates", "15 min", "Business health, new clients, changes"],
+  ["Quarter goals", "45 min", "Set 3-5 company priorities for next 90 days"],
+  ["Team goals", "30 min", "How each role supports company goals"],
+  ["Process improvements", "20 min", "What to start, stop, continue"],
+  ["Open discussion", "20 min", "Team input, questions, ideas"],
+];
+
+const MEETING_DO_ITEMS = [
+  "Start on time (don't wait for latecomers)",
+  "End with clear action items (who, what, when)",
+  "Camera ON for video calls",
+  "Record all client meetings",
+  "Post AI summary within 24h (client meetings)",
+];
+
+const MEETING_DONT_ITEMS = [
+  "Hold meetings without an agenda",
+  "Let meetings run over without permission",
+  "Multitask (check phone, work on other things)",
+  "Skip meetings without notice",
+  "Schedule meetings without checking calendars",
+];
+
+function MeetingCadenceHeader() {
   return (
-    <div className="animate-fade-in prose-handbook">
-      {/* Header Block */}
-      <div className="mb-8">
-        <p className="text-accent! font-medium tracking-widest uppercase text-sm mb-2">
-          Operations Playbook
-        </p>
-        <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-primary mb-4">
-          Meeting Cadence
-        </h1>
-        <p className="text-muted-foreground">
-          Our Rhythm of Communication &amp; Alignment
-        </p>
-      </div>
+    <div className="mb-8">
+      <p className="text-accent! mb-2 text-sm font-medium uppercase tracking-widest">
+        Operations Playbook
+      </p>
+      <h1 className="mb-4 text-3xl font-bold tracking-tight text-primary lg:text-4xl">
+        Meeting Cadence
+      </h1>
+      <p className="text-muted-foreground">Our Rhythm of Communication & Alignment</p>
+    </div>
+  );
+}
 
-      {/* Meeting Overview */}
+function NumberedSectionHeading({ number, title }: { number: string; title: string }) {
+  return (
+    <h2 className="mb-6 flex items-center gap-3 border-b border-border pb-2 text-2xl font-bold tracking-tight text-primary">
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent text-sm font-bold text-accent-foreground">
+        {number}
+      </span>
+      <span className="hidden">. </span>
+      {title}
+    </h2>
+  );
+}
+
+function RequiredOutput({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="my-6 rounded-lg bg-muted/50 p-4">
+      <p className="my-0! text-sm">
+        <strong className="text-primary">Required Output:</strong> {children}
+      </p>
+    </div>
+  );
+}
+
+function AgendaTable({ rows }: { rows: readonly (readonly [string, string, string])[] }) {
+  return (
+    <div className="overflow-x-auto">
+      <table>
+        <thead>
+          <tr>
+            <th className="w-20">Time</th>
+            <th>Topic</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map(([time, topic, details]) => (
+            <tr key={topic}>
+              <td>{time}</td>
+              <td className="font-semibold">{topic}</td>
+              <td>{details}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function MeetingOverviewSection() {
+  return (
+    <>
       <h2 id="meeting-overview">Meeting Overview</h2>
       <div className="overflow-x-auto">
         <table>
@@ -30,93 +147,47 @@ export function MeetingCadenceSection() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="font-semibold">Daily Standup</td>
-              <td>Daily (async)</td>
-              <td>5 min (SOD/EOD)</td>
-              <td>All team</td>
-              <td>Each person</td>
-            </tr>
-            <tr>
-              <td className="font-semibold">Weekly Ops + Marketing</td>
-              <td>Weekly</td>
-              <td>30 min</td>
-              <td>Ops + Marketing</td>
-              <td>Ops Coord</td>
-            </tr>
-            <tr>
-              <td className="font-semibold">Weekly All-Hands</td>
-              <td>Weekly</td>
-              <td>30-45 min</td>
-              <td>All departments</td>
-              <td>Ops Coord</td>
-            </tr>
-            <tr>
-              <td className="font-semibold">Ad-Hoc / As-Needed</td>
-              <td>As needed</td>
-              <td>15-30 min</td>
-              <td>Relevant people</td>
-              <td>Requester</td>
-            </tr>
-            <tr>
-              <td className="font-semibold">Client Weekly Check-in</td>
-              <td>Weekly per client</td>
-              <td>30 min</td>
-              <td>Ops + Client</td>
-              <td>Ops Coord</td>
-            </tr>
-            <tr>
-              <td className="font-semibold">Monthly Review</td>
-              <td>Monthly</td>
-              <td>45-60 min</td>
-              <td>Founder + 1</td>
-              <td>Founder</td>
-            </tr>
-            <tr>
-              <td className="font-semibold">Quarterly Planning</td>
-              <td>Quarterly</td>
-              <td>2-3 hours</td>
-              <td>All team</td>
-              <td>Founder</td>
-            </tr>
+            {MEETING_OVERVIEW_ROWS.map(([meeting, frequency, duration, attendees, owner]) => (
+              <tr key={meeting}>
+                <td className="font-semibold">{meeting}</td>
+                <td>{frequency}</td>
+                <td>{duration}</td>
+                <td>{attendees}</td>
+                <td>{owner}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
+    </>
+  );
+}
 
-      {/* 1. Daily Standup */}
-      <h2 className="text-2xl font-bold tracking-tight text-primary mb-6 pb-2 border-b border-border flex items-center gap-3">
-        <span className="w-8 h-8 rounded-full bg-accent text-accent-foreground flex items-center justify-center text-sm font-bold shrink-0">
-          1
-        </span>
-        <span className="hidden">. </span>
-        Daily Standup (Async via Lark)
-      </h2>
+function DailyStandupSection() {
+  return (
+    <section>
+      <NumberedSectionHeading number="1" title="Daily Standup (Async via Lark)" />
 
-      <h3 className="text-primary mt-6 mb-2">
-        SOD (Start of Day) — Post by 9:00 AM:
-      </h3>
+      <h3 className="mb-2 mt-6 text-primary">SOD (Start of Day) - Post by 9:00 AM:</h3>
       <ul>
         <li>Top 3 priorities for today</li>
         <li>Any blockers or help needed</li>
       </ul>
 
-      <h3 className="text-primary mt-6 mb-2">
-        EOD (End of Day) — Post by 6:00 PM:
-      </h3>
+      <h3 className="mb-2 mt-6 text-primary">EOD (End of Day) - Post by 6:00 PM:</h3>
       <ul>
         <li>What got done today</li>
         <li>What&apos;s carrying over to tomorrow</li>
         <li>Any issues or wins to flag</li>
       </ul>
+    </section>
+  );
+}
 
-      {/* 2. Weekly Ops + Marketing Sync */}
-      <h2 className="text-2xl font-bold tracking-tight text-primary mb-6 pb-2 border-b border-border flex items-center gap-3">
-        <span className="w-8 h-8 rounded-full bg-accent text-accent-foreground flex items-center justify-center text-sm font-bold shrink-0">
-          2
-        </span>
-        <span className="hidden">. </span>
-        Weekly Ops + Marketing Sync
-      </h2>
+function WeeklyOpsMarketingSection() {
+  return (
+    <section>
+      <NumberedSectionHeading number="2" title="Weekly Ops + Marketing Sync" />
 
       <p>
         <strong>When:</strong> Every Monday, 9:00 AM (30 min)
@@ -125,165 +196,76 @@ export function MeetingCadenceSection() {
       </p>
 
       <p>
-        <strong>Purpose:</strong> Align on client deliverables, content
-        calendars, and handoffs between ops and marketing tasks.
+        <strong>Purpose:</strong> Align on client deliverables, content calendars, and handoffs between
+        ops and marketing tasks.
       </p>
 
       <p className="mb-2">
         <strong>Agenda:</strong>
       </p>
-      <div className="overflow-x-auto">
-        <table>
-          <thead>
-            <tr>
-              <th className="w-20">Time</th>
-              <th>Topic</th>
-              <th>Details</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>5 min</td>
-              <td className="font-semibold">Client Status Quick Check</td>
-              <td>Any urgent client issues or updates</td>
-            </tr>
-            <tr>
-              <td>10 min</td>
-              <td className="font-semibold">This Week&apos;s Deliverables</td>
-              <td>What&apos;s due, who&apos;s doing what, dependencies</td>
-            </tr>
-            <tr>
-              <td>10 min</td>
-              <td className="font-semibold">Handoffs &amp; Blockers</td>
-              <td>
-                Items passing between Ops ↔ Marketing, any blockers
-              </td>
-            </tr>
-            <tr>
-              <td>5 min</td>
-              <td className="font-semibold">Action Items</td>
-              <td>Confirm who does what by when</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <AgendaTable rows={WEEKLY_OPS_AGENDA} />
+      <RequiredOutput>Brief notes in Ops + Marketing Lark channel</RequiredOutput>
+    </section>
+  );
+}
 
-      <div className="bg-muted/50 p-4 rounded-lg my-6">
-        <p className="text-sm my-0!">
-          <strong className="text-primary">Required Output:</strong> Brief notes
-          in Ops + Marketing Lark channel
-        </p>
-      </div>
-
-      {/* 3. Weekly All-Hands */}
-      <h2 className="text-2xl font-bold tracking-tight text-primary mb-6 pb-2 border-b border-border flex items-center gap-3">
-        <span className="w-8 h-8 rounded-full bg-accent text-accent-foreground flex items-center justify-center text-sm font-bold shrink-0">
-          3
-        </span>
-        <span className="hidden">. </span>
-        Weekly All-Hands (All Departments)
-      </h2>
+function WeeklyAllHandsSection() {
+  return (
+    <section>
+      <NumberedSectionHeading number="3" title="Weekly All-Hands (All Departments)" />
 
       <p>
         <strong>When:</strong> Every Friday, 10:00 AM (30-45 min)
         <br />
-        <strong>Who:</strong> All team members (Ops, Marketing, Web Dev,
-        Finance, HR)
+        <strong>Who:</strong> All team members (Ops, Marketing, Web Dev, Finance, HR)
       </p>
 
       <p>
-        <strong>Purpose:</strong> Full team alignment, celebrate wins, address
-        cross-department issues, maintain team connection.
+        <strong>Purpose:</strong> Full team alignment, celebrate wins, address cross-department issues,
+        maintain team connection.
       </p>
 
       <p className="mb-2">
         <strong>Agenda:</strong>
       </p>
-      <div className="overflow-x-auto">
-        <table>
-          <thead>
-            <tr>
-              <th className="w-20">Time</th>
-              <th>Topic</th>
-              <th>Details</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>5 min</td>
-              <td className="font-semibold">Wins &amp; Shoutouts</td>
-              <td>Celebrate completed work, client feedback, team wins</td>
-            </tr>
-            <tr>
-              <td>10 min</td>
-              <td className="font-semibold">Department Updates</td>
-              <td>Quick update from each dept (Ops, Marketing, Dev, Finance)</td>
-            </tr>
-            <tr>
-              <td>10 min</td>
-              <td className="font-semibold">Client Pipeline &amp; Status</td>
-              <td>Active clients, upcoming launches, new inquiries</td>
-            </tr>
-            <tr>
-              <td>10 min</td>
-              <td className="font-semibold">Cross-Dept Issues</td>
-              <td>Issues needing multiple departments, decisions to make</td>
-            </tr>
-            <tr>
-              <td>5 min</td>
-              <td className="font-semibold">Announcements &amp; Close</td>
-              <td>Company news, upcoming events, action items recap</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <AgendaTable rows={ALL_HANDS_AGENDA} />
+      <RequiredOutput>Meeting notes posted to team Lark channel within 1 hour</RequiredOutput>
+    </section>
+  );
+}
 
-      <div className="bg-muted/50 p-4 rounded-lg my-6">
-        <p className="text-sm my-0!">
-          <strong className="text-primary">Required Output:</strong> Meeting
-          notes posted to team Lark channel within 1 hour
-        </p>
-      </div>
-
-      {/* 4. Ad-Hoc / As-Needed Meetings */}
-      <h2 className="text-2xl font-bold tracking-tight text-primary mb-6 pb-2 border-b border-border flex items-center gap-3">
-        <span className="w-8 h-8 rounded-full bg-accent text-accent-foreground flex items-center justify-center text-sm font-bold shrink-0">
-          4
-        </span>
-        <span className="hidden">. </span>
-        Ad-Hoc / As-Needed Meetings
-      </h2>
+function AdHocMeetingsSection() {
+  return (
+    <section>
+      <NumberedSectionHeading number="4" title="Ad-Hoc / As-Needed Meetings" />
 
       <p>
-        <strong>When:</strong> As needed — scheduled same day or 24h in advance
+        <strong>When:</strong> As needed - scheduled same day or 24h in advance
         <br />
         <strong>Who:</strong> Only people who need to be there (keep it small)
       </p>
 
-      <h3 className="text-primary mt-6 mb-2">When to call an ad-hoc meeting:</h3>
+      <h3 className="mb-2 mt-6 text-primary">When to call an ad-hoc meeting:</h3>
       <ul>
-        <li>Urgent client issue that needs immediate discussion</li>
-        <li>Blocker that can&apos;t wait until next scheduled meeting</li>
-        <li>Complex problem that needs real-time collaboration</li>
-        <li>Decision that requires multiple people&apos;s input</li>
+        {AD_HOC_MEETING_REASONS.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
       </ul>
 
-      <h3 className="text-primary mt-6 mb-2">Rules for ad-hoc meetings:</h3>
+      <h3 className="mb-2 mt-6 text-primary">Rules for ad-hoc meetings:</h3>
       <ul>
-        <li>Must have a clear purpose stated in the invite</li>
-        <li>Keep to 15-30 min max</li>
-        <li>Document outcome/decision in relevant Lark channel</li>
-        <li>If it can be resolved async (Lark message), don&apos;t meet</li>
+        {AD_HOC_MEETING_RULES.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
       </ul>
+    </section>
+  );
+}
 
-      {/* 5. Monthly Performance Review */}
-      <h2 className="text-2xl font-bold tracking-tight text-primary mb-6 pb-2 border-b border-border flex items-center gap-3">
-        <span className="w-8 h-8 rounded-full bg-accent text-accent-foreground flex items-center justify-center text-sm font-bold shrink-0">
-          5
-        </span>
-        <span className="hidden">. </span>
-        Monthly Performance Review
-      </h2>
+function MonthlyPerformanceReviewSection() {
+  return (
+    <section>
+      <NumberedSectionHeading number="5" title="Monthly Performance Review" />
 
       <p>
         <strong>When:</strong> Last week of each month (45-60 min per person)
@@ -293,43 +275,22 @@ export function MeetingCadenceSection() {
         <strong>Agenda:</strong>
       </p>
       <ol>
-        <li>
-          <strong>Review scorecard results</strong> (10 min) — Walk through 4
-          components
-        </li>
-        <li>
-          <strong>Discuss wins</strong> (10 min) — What went well, recognize
-          achievements
-        </li>
-        <li>
-          <strong>Discuss growth areas</strong> (15 min) — Where to improve,
-          support needed
-        </li>
-        <li>
-          <strong>Set next month focus</strong> (10 min) — 1-2 specific
-          development goals
-        </li>
-        <li>
-          <strong>Employee feedback</strong> (10 min) — Their input on support,
-          processes, team
-        </li>
+        {MONTHLY_REVIEW_AGENDA.map(([title, duration, details]) => (
+          <li key={title}>
+            <strong>{title}</strong> ({duration}) - {details}
+          </li>
+        ))}
       </ol>
 
-      <div className="bg-muted/50 p-4 rounded-lg my-6">
-        <p className="text-sm my-0!">
-          <strong className="text-primary">Required Output:</strong> Completed
-          Monthly Evaluation form saved to employee file
-        </p>
-      </div>
+      <RequiredOutput>Completed Monthly Evaluation form saved to employee file</RequiredOutput>
+    </section>
+  );
+}
 
-      {/* 6. Quarterly Planning Session */}
-      <h2 className="text-2xl font-bold tracking-tight text-primary mb-6 pb-2 border-b border-border flex items-center gap-3">
-        <span className="w-8 h-8 rounded-full bg-accent text-accent-foreground flex items-center justify-center text-sm font-bold shrink-0">
-          6
-        </span>
-        <span className="hidden">. </span>
-        Quarterly Planning Session
-      </h2>
+function QuarterlyPlanningSection() {
+  return (
+    <section>
+      <NumberedSectionHeading number="6" title="Quarterly Planning Session" />
 
       <p>
         <strong>When:</strong> First week of Jan, Apr, Jul, Oct (2-3 hours)
@@ -339,114 +300,88 @@ export function MeetingCadenceSection() {
         <strong>Agenda:</strong>
       </p>
       <ol start={6}>
-        <li>
-          <strong>Review last quarter</strong> (30 min) — What worked, what
-          didn&apos;t, key metrics
-        </li>
-        <li>
-          <strong>Company updates</strong> (15 min) — Business health, new
-          clients, changes
-        </li>
-        <li>
-          <strong>Quarter goals</strong> (45 min) — Set 3-5 company priorities
-          for next 90 days
-        </li>
-        <li>
-          <strong>Team goals</strong> (30 min) — How each role supports company
-          goals
-        </li>
-        <li>
-          <strong>Process improvements</strong> (20 min) — What to start, stop,
-          continue
-        </li>
-        <li>
-          <strong>Open discussion</strong> (20 min) — Team input, questions,
-          ideas
-        </li>
+        {QUARTERLY_PLANNING_AGENDA.map(([title, duration, details]) => (
+          <li key={title}>
+            <strong>{title}</strong> ({duration}) - {details}
+          </li>
+        ))}
       </ol>
 
-      <div className="bg-muted/50 p-4 rounded-lg my-6">
-        <p className="text-sm my-0!">
-          <strong className="text-primary">Required Output:</strong> Quarterly
-          Goals document shared with team within 48 hours
-        </p>
-      </div>
+      <RequiredOutput>Quarterly Goals document shared with team within 48 hours</RequiredOutput>
+    </section>
+  );
+}
 
-      {/* 7. Meeting Rules */}
-      <h2 className="text-2xl font-bold tracking-tight text-primary mb-6 pb-2 border-b border-border flex items-center gap-3">
-        <span className="w-8 h-8 rounded-full bg-accent text-accent-foreground flex items-center justify-center text-sm font-bold shrink-0">
-          7
-        </span>
-        <span className="hidden">. </span>
-        Meeting Rules (All Meetings)
-      </h2>
+function MeetingRuleCard({
+  title,
+  headerClassName,
+  bulletClassName,
+  items,
+}: {
+  title: string;
+  headerClassName: string;
+  bulletClassName: string;
+  items: readonly string[];
+}) {
+  return (
+    <div className="overflow-hidden rounded-lg border border-border">
+      <div className={headerClassName}>{title}</div>
+      <div className="space-y-3 bg-card p-4">
+        {items.map((item) => (
+          <div key={item} className="flex items-start gap-3 text-sm">
+            <span className={bulletClassName}>•</span>
+            <span>{item}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MeetingRulesSection() {
+  return (
+    <section>
+      <NumberedSectionHeading number="7" title="Meeting Rules (All Meetings)" />
 
       <div className="grid gap-6 md:grid-cols-2">
-        {/* DO Card */}
-        <div className="rounded-lg border border-border overflow-hidden">
-          <div className="bg-primary text-primary-foreground px-4 py-3 font-medium">
-            ✓ DO
-          </div>
-          <div className="bg-card p-4 space-y-3">
-            <div className="flex items-start gap-3 text-sm">
-              <span className="text-status-success font-bold">•</span>
-              <span>Start on time (don&apos;t wait for latecomers)</span>
-            </div>
-            <div className="flex items-start gap-3 text-sm">
-              <span className="text-status-success font-bold">•</span>
-              <span>End with clear action items (who, what, when)</span>
-            </div>
-            <div className="flex items-start gap-3 text-sm">
-              <span className="text-status-success font-bold">•</span>
-              <span>Camera ON for video calls</span>
-            </div>
-            <div className="flex items-start gap-3 text-sm">
-              <span className="text-status-success font-bold">•</span>
-              <span>Record all client meetings</span>
-            </div>
-            <div className="flex items-start gap-3 text-sm">
-              <span className="text-status-success font-bold">•</span>
-              <span>Post AI summary within 24h (client meetings)</span>
-            </div>
-          </div>
-        </div>
-
-        {/* DON'T Card */}
-        <div className="rounded-lg border border-border overflow-hidden">
-          <div className="bg-destructive text-destructive-foreground px-4 py-3 font-medium">
-            ✗ DON&apos;T
-          </div>
-          <div className="bg-card p-4 space-y-3">
-            <div className="flex items-start gap-3 text-sm">
-              <span className="text-destructive font-bold">•</span>
-              <span>Hold meetings without an agenda</span>
-            </div>
-            <div className="flex items-start gap-3 text-sm">
-              <span className="text-destructive font-bold">•</span>
-              <span>Let meetings run over without permission</span>
-            </div>
-            <div className="flex items-start gap-3 text-sm">
-              <span className="text-destructive font-bold">•</span>
-              <span>Multitask (check phone, work on other things)</span>
-            </div>
-            <div className="flex items-start gap-3 text-sm">
-              <span className="text-destructive font-bold">•</span>
-              <span>Skip meetings without notice</span>
-            </div>
-            <div className="flex items-start gap-3 text-sm">
-              <span className="text-destructive font-bold">•</span>
-              <span>Schedule meetings without checking calendars</span>
-            </div>
-          </div>
-        </div>
+        <MeetingRuleCard
+          title="✓ DO"
+          headerClassName="bg-primary px-4 py-3 font-medium text-primary-foreground"
+          bulletClassName="font-bold text-status-success"
+          items={MEETING_DO_ITEMS}
+        />
+        <MeetingRuleCard
+          title="✕ DON'T"
+          headerClassName="bg-destructive px-4 py-3 font-medium text-destructive-foreground"
+          bulletClassName="font-bold text-destructive"
+          items={MEETING_DONT_ITEMS}
+        />
       </div>
+    </section>
+  );
+}
 
-      {/* Footer */}
-      <div className="mt-12 pt-6 border-t border-border">
-        <p className="text-sm text-muted-foreground italic">
-          Owner: Operations Coordinator
-        </p>
-      </div>
+function MeetingCadenceFooter() {
+  return (
+    <div className="mt-12 border-t border-border pt-6">
+      <p className="text-sm italic text-muted-foreground">Owner: Operations Coordinator</p>
+    </div>
+  );
+}
+
+export function MeetingCadenceSection() {
+  return (
+    <div className="animate-fade-in prose-handbook">
+      <MeetingCadenceHeader />
+      <MeetingOverviewSection />
+      <DailyStandupSection />
+      <WeeklyOpsMarketingSection />
+      <WeeklyAllHandsSection />
+      <AdHocMeetingsSection />
+      <MonthlyPerformanceReviewSection />
+      <QuarterlyPlanningSection />
+      <MeetingRulesSection />
+      <MeetingCadenceFooter />
     </div>
   );
 }

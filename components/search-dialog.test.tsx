@@ -1,6 +1,5 @@
 import { describe, test, expect, mock } from "bun:test";
 import { SearchDialog } from './search-dialog';
-import * as React from 'react';
 
 // Mock next/navigation
 mock.module("next/navigation", () => ({

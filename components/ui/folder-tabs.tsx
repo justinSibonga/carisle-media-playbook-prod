@@ -17,7 +17,9 @@ interface FolderTabsProps {
   hashToTabMap?: Record<string, string>; // Maps hash IDs to tab keys
 }
 
-export function FolderTabs({ tabs, defaultTab, hashToTabMap = {} }: FolderTabsProps) {
+const EMPTY_HASH_TO_TAB_MAP: Record<string, string> = {};
+
+export function FolderTabs({ tabs, defaultTab, hashToTabMap = EMPTY_HASH_TO_TAB_MAP }: FolderTabsProps) {
   const [activeTab, setActiveTab] = useState(defaultTab || tabs[0]?.key);
   const currentTab = tabs.find(t => t.key === activeTab) || tabs[0];
   const containerRef = useRef<HTMLDivElement>(null);

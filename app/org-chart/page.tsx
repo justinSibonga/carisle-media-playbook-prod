@@ -18,11 +18,17 @@ const departments: Department[] = [
   { id: "accounting", title: "Accounting", members: [{ name: "Amica Castro", role: "Accounting", image: "/org/amica.jpg" }] },
   { id: "hr", title: "HR & Admin", members: [{ name: "Agatha Adelino", role: "HR & Admin", image: "/org/agatha.jpg" }] },
   { id: "sales", title: "Sales", members: [{ name: "Danica Lagria", role: "Sales", image: "/org/danica.jpg" }] },
-  { id: "marketing", title: "Marketing", members: [{ name: "Hanna Jocoya", role: "Marketing", image: "/org/hanna.jpg" }, { name: "Jessica Quinones", role: "Marketing", image: "/org/jessica.png" }] },
+  {
+    id: "marketing",
+    title: "CRM Specialist",
+    members: [{ name: "Emmanuel Quijano", role: "CRM & Revenue Systems Specialist", image: "/org/angelo.jpg" }],
+  },
   { id: "creatives", title: "Creatives", members: [{ name: "Krisna Solis", role: "Creatives", image: "/org/krisna.jpg" }] },
   { id: "video", title: "Video Marketing", members: [{ name: "Ivan Matias", role: "Video Marketing", image: "/org/ivan.jpg" }] },
   { id: "dev", title: "Web Development", members: [{ name: "Maui Rayos", role: "Web Developer", image: "/org/maui.png" }, { name: "Justin Sibonga", role: "Web Developer", image: "/org/justin.png" }] },
 ];
+
+const visibleDepartments = departments.filter((dept) => dept.members.length > 0);
 
 // Optimized Apple-style card - clean design with name below photo
 function PersonCard({ person, isCEO = false }: { person: Person; isCEO?: boolean }) {
@@ -73,7 +79,7 @@ function DepartmentColumn({ dept }: { dept: Department }) {
       </div>
       {/* Members stacked */}
       {dept.members.map((member, idx) => (
-        <div key={idx} className="flex flex-col items-center">
+        <div key={member.name} className="flex flex-col items-center">
           {idx > 0 && <div className="w-px h-4 bg-amber-300/30" />}
           <PersonCard person={member} />
         </div>
@@ -108,8 +114,8 @@ export default function OrgChartPage() {
         
         {/* All team members in a grid - using the same PersonCard component */}
         <div id="tour-departments" className="grid grid-cols-2 gap-3">
-          {departments.flatMap(dept => dept.members).map((member, idx) => (
-            <div key={idx} className="flex justify-center">
+          {visibleDepartments.flatMap(dept => dept.members).map((member) => (
+            <div key={member.name} className="flex justify-center">
               <PersonCard person={member} />
             </div>
           ))}
@@ -131,12 +137,12 @@ export default function OrgChartPage() {
           
           {/* Horizontal line container - width matches departments row exactly */}
           <div id="tour-departments" className="flex">
-            {departments.map((dept, idx) => (
-              <div key={dept.id} className="flex flex-col items-center" style={{ width: 130, marginRight: idx < departments.length - 1 ? 24 : 0 }}>
+            {visibleDepartments.map((dept, idx) => (
+              <div key={dept.id} className="flex flex-col items-center" style={{ width: 130, marginRight: idx < visibleDepartments.length - 1 ? 24 : 0 }}>
                 {/* Horizontal line segment - half on each side, except first/last */}
                 <div className="relative w-full h-px">
                   {idx > 0 && <div className="absolute top-0 right-1/2 left-[-12px] h-px bg-amber-300/30" />}
-                  {idx < departments.length - 1 && <div className="absolute top-0 left-1/2 right-[-12px] h-px bg-amber-300/30" />}
+                  {idx < visibleDepartments.length - 1 && <div className="absolute top-0 left-1/2 right-[-12px] h-px bg-amber-300/30" />}
                 </div>
                 {/* Vertical connector down */}
                 <div className="w-px h-6 bg-amber-300/30" />

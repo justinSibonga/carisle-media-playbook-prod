@@ -116,9 +116,9 @@ export function CoreValuesSection() {
                     This looks like:
                   </h3>
                   <ul className="space-y-2 list-none pl-0 my-0!">
-                    {value.looksLike.map((item, index) => (
+                    {value.looksLike.map((item) => (
                       <li
-                        key={index}
+                        key={item}
                         className="flex items-start gap-2 text-muted-foreground"
                       >
                         <span className="text-accent mt-1">•</span>
@@ -137,9 +137,9 @@ export function CoreValuesSection() {
                     This doesn&apos;t look like:
                   </h3>
                   <ul className="space-y-2 list-none pl-0 my-0!">
-                    {value.doesntLookLike.map((item, index) => (
+                    {value.doesntLookLike.map((item) => (
                       <li
-                        key={index}
+                        key={item}
                         className="flex items-start gap-2 text-muted-foreground"
                       >
                         <span className="text-destructive mt-1">•</span>

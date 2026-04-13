@@ -40,8 +40,8 @@ export function CodeOfConductSection() {
                 "Maintain confidentiality",
                 "Comply with laws and policies",
                 "Collaborate effectively",
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3 text-sm">
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-3 text-sm">
                   <span className="text-status-success font-bold">•</span>
                   <span>{item}</span>
                 </div>
@@ -61,8 +61,8 @@ export function CodeOfConductSection() {
                 "Conflicts of interest",
                 "Misuse of company property",
                 "Unprofessional communication",
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3 text-sm">
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-3 text-sm">
                   <span className="text-destructive font-bold">•</span>
                   <span>{item}</span>
                 </div>
@@ -90,8 +90,8 @@ export function CodeOfConductSection() {
               "Report any damage or loss immediately",
               "Follow data security protocols",
               "Return all company property upon separation",
-            ].map((item, i) => (
-              <li key={i} className="flex items-start gap-2 text-foreground/80">
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-2 text-foreground/80">
                 <span className="text-status-success mt-1">▶</span> {item}
               </li>
             ))}
@@ -170,8 +170,8 @@ export function CodeOfConductSection() {
               "Only authorized reps may post on official accounts",
               "Get approval before using company branding",
               "Avoid negative comments about CM or colleagues",
-            ].map((item, i) => (
-              <li key={i} className="flex items-start gap-2 text-foreground/80">
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-2 text-foreground/80">
                 <span className="text-status-success mt-1">▶</span> {item}
               </li>
             ))}

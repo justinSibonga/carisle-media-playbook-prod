@@ -100,8 +100,8 @@ export function EmploymentSection() {
                 "Equal access to opportunities",
                 "Reasonable accommodations",
                 "Prompt complaint investigation",
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3 text-sm">
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-3 text-sm">
                   <span className="text-status-success font-bold">•</span>
                   <span>{item}</span>
                 </div>
@@ -120,8 +120,8 @@ export function EmploymentSection() {
                 "Harassment (verbal/physical/visual)",
                 "Bias in hiring or promotions",
                 "Retaliation against reporters",
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3 text-sm">
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-3 text-sm">
                   <span className="text-destructive font-bold">•</span>
                   <span>{item}</span>
                 </div>
@@ -154,8 +154,8 @@ export function EmploymentSection() {
               "Use company resources for work purposes only",
               "Avoid conflicts of interest",
               "Comply with all laws and company policies",
-            ].map((item, i) => (
-              <li key={i} className="flex items-start gap-2 text-foreground/80">
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-2 text-foreground/80">
                 <span className="text-status-success mt-1">▶</span> {item}
               </li>
             ))}
@@ -195,8 +195,8 @@ export function EmploymentSection() {
               "Access sensitive data on a need-to-know basis only",
               "Use company systems responsibly and securely",
               "Report any suspected data breaches immediately to HR or DPO",
-            ].map((item, i) => (
-              <li key={i} className="flex items-start gap-2 text-foreground/80">
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-2 text-foreground/80">
                 <span className="text-status-success mt-1">▶</span> {item}
               </li>
             ))}

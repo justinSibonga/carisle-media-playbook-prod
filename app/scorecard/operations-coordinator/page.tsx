@@ -5,8 +5,7 @@ import { CheckmarkCircle01Icon, Alert01Icon, CancelCircleIcon } from "@hugeicons
 import { PlaybookPageLayout } from "@/components/playbook-page-layout";
 import { FolderTabs } from "@/components/ui/folder-tabs";
 
-export default function OperationsCoordinatorScorecardPage() {
-  const tabs = [
+const OPERATIONS_COORDINATOR_TABS = [
     {
       key: "purpose",
       label: "1. Purpose",
@@ -59,8 +58,8 @@ export default function OperationsCoordinatorScorecardPage() {
                 "Blockers are identified, researched, and acted on early",
                 "KPI reports reflect reality, not explanations",
                 "The founder does not need to manage, follow up, or coordinate execution",
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3 p-3 rounded-lg border border-border bg-card">
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-3 p-3 rounded-lg border border-border bg-card">
                   <HugeiconsIcon icon={CheckmarkCircle01Icon} className="w-5 h-5 text-status-success shrink-0 mt-0.5" />
                   <span className="text-sm">{item}</span>
                 </div>
@@ -79,8 +78,8 @@ export default function OperationsCoordinatorScorecardPage() {
                 { label: "Client complaints", desc: "caused by slow or unclear communication" },
                 { label: "Internal chaos", desc: "when plans change or people are unavailable" },
                 { label: "Founder becoming the default", desc: "coordinator, presenter, or problem-solver" },
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3 p-3 rounded-lg border border-destructive/30 bg-destructive/5">
+              ].map((item) => (
+                <div key={item.label} className="flex items-start gap-3 p-3 rounded-lg border border-destructive/30 bg-destructive/5">
                   <HugeiconsIcon icon={CancelCircleIcon} className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
                   <span className="text-sm"><strong>{item.label}</strong> – {item.desc}</span>
                 </div>
@@ -290,8 +289,8 @@ export default function OperationsCoordinatorScorecardPage() {
                     { label: "Clarity & Documentation", desc: "Communicates in clear, structured updates. Writes emails and messages with strong documentation, logic, and reasoning so decisions and context are easy to understand and revisit." },
                     { label: "Professional Presence", desc: "Is always ready to speak with clients and the team calmly, confidently, and professionally. Communicates as if any message could be forwarded to a client or stakeholder." },
                     { label: "Integrity", desc: "Reports real status and data — not vague \"looks okay\" updates. Flags issues early instead of protecting appearances." },
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3 text-sm">
+                  ].map((item) => (
+                    <div key={item.label} className="flex items-start gap-3 text-sm">
                       <HugeiconsIcon icon={CheckmarkCircle01Icon} className="w-4 h-4 text-status-success shrink-0 mt-0.5" />
                       <div>
                         <span className="font-medium">{item.label}:</span>{" "}
@@ -316,8 +315,8 @@ export default function OperationsCoordinatorScorecardPage() {
                     "Hiding delays, blockers, or uncertainty instead of surfacing them early",
                     "Blaming others instead of owning the outcome",
                     "Needing the Founder to step in for clarity, reassurance, or follow-through",
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3 text-sm">
+                  ].map((item) => (
+                    <div key={item} className="flex items-start gap-3 text-sm">
                       <HugeiconsIcon icon={Alert01Icon} className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                       <span>{item}</span>
                     </div>
@@ -486,7 +485,9 @@ export default function OperationsCoordinatorScorecardPage() {
         </div>
       )
     }
-  ];
+];
+
+export default function OperationsCoordinatorScorecardPage() {
 
   return (
     <PlaybookPageLayout>
@@ -521,7 +522,7 @@ export default function OperationsCoordinatorScorecardPage() {
         </table>
 
         {/* Folder Tabs */}
-        <FolderTabs tabs={tabs} defaultTab="purpose" />
+        <FolderTabs tabs={OPERATIONS_COORDINATOR_TABS} defaultTab="purpose" />
 
         {/* Signature Section */}
         <section className="border-t border-border pt-8 mt-12">

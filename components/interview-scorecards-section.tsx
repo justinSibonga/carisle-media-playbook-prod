@@ -215,8 +215,8 @@ export function InterviewScorecardsSection() {
                 </tr>
               </thead>
               <tbody>
-                {scorecard.criteria.map((criterion, index) => (
-                  <tr key={index}>
+                {scorecard.criteria.map((criterion) => (
+                  <tr key={criterion.name}>
                     <td className="font-semibold">{criterion.name}</td>
                     <td>{criterion.description}</td>
                     <td className="text-center">/5</td>

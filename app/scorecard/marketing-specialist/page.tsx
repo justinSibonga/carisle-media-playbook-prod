@@ -5,8 +5,7 @@ import { CheckmarkCircle01Icon, Alert01Icon, CancelCircleIcon } from "@hugeicons
 import { PlaybookPageLayout } from "@/components/playbook-page-layout";
 import { FolderTabs } from "@/components/ui/folder-tabs";
 
-export default function MarketingSpecialistScorecardPage() {
-  const tabs = [
+const MARKETING_SPECIALIST_TABS = [
     {
       key: "purpose",
       label: "1. Purpose",
@@ -58,8 +57,8 @@ export default function MarketingSpecialistScorecardPage() {
                 "Issues are identified early and worked on before escalation",
                 "Clients receive updates without chasing",
                 "The founder does not need to complete or fix execution",
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3 p-3 rounded-lg border border-border bg-card">
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-3 p-3 rounded-lg border border-border bg-card">
                   <HugeiconsIcon icon={CheckmarkCircle01Icon} className="w-5 h-5 text-status-success shrink-0 mt-0.5" />
                   <span className="text-sm">{item}</span>
                 </div>
@@ -77,8 +76,8 @@ export default function MarketingSpecialistScorecardPage() {
                 "Tasks being forgotten or not updated, so no one knows what's actually done",
                 "Clients asking for updates because they haven't heard anything",
                 "The founder stepping in to finish work or talk to clients",
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3 p-3 rounded-lg border border-destructive/30 bg-destructive/5">
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-3 p-3 rounded-lg border border-destructive/30 bg-destructive/5">
                   <HugeiconsIcon icon={CancelCircleIcon} className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
                   <span className="text-sm">{item}</span>
                 </div>
@@ -287,8 +286,8 @@ export default function MarketingSpecialistScorecardPage() {
                     { label: "Clarity & Documentation", desc: "Writes clear, structured updates. Documents GHL setups, logic, and changes so work is easy to review, explain, or hand off." },
                     { label: "Continuous Learning", desc: "Actively improves GHL and marketing skills through self-learning, testing, and practice without needing reminders." },
                     { label: "Integrity", desc: "Reports real status and data — not vague \"looks okay\" updates. Flags issues early instead of protecting appearances." },
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3 text-sm">
+                  ].map((item) => (
+                    <div key={item.label} className="flex items-start gap-3 text-sm">
                       <HugeiconsIcon icon={CheckmarkCircle01Icon} className="w-4 h-4 text-status-success shrink-0 mt-0.5" />
                       <div>
                         <span className="font-medium">{item.label}:</span>{" "}
@@ -314,8 +313,8 @@ export default function MarketingSpecialistScorecardPage() {
                     "Forgetting tasks or failing to update boards in real time",
                     "Leaving work unfinished for others to fix",
                     "Needing the Founder to step in to complete execution",
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3 text-sm">
+                  ].map((item) => (
+                    <div key={item} className="flex items-start gap-3 text-sm">
                       <HugeiconsIcon icon={Alert01Icon} className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                       <span>{item}</span>
                     </div>
@@ -497,7 +496,9 @@ export default function MarketingSpecialistScorecardPage() {
         </div>
       )
     }
-  ];
+];
+
+export default function MarketingSpecialistScorecardPage() {
 
   return (
     <PlaybookPageLayout>
@@ -532,7 +533,7 @@ export default function MarketingSpecialistScorecardPage() {
         </table>
 
         {/* Folder Tabs */}
-        <FolderTabs tabs={tabs} defaultTab="purpose" />
+        <FolderTabs tabs={MARKETING_SPECIALIST_TABS} defaultTab="purpose" />
 
         {/* Signature Section */}
         <section className="border-t border-border pt-8 mt-12">

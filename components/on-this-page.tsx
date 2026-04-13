@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { LazyMotion, domAnimation, m, useReducedMotion } from "@/lib/motion";
 
 interface TOCItem {
   id: string;
@@ -11,6 +11,7 @@ interface TOCItem {
 }
 
 export function OnThisPage() {
+  const shouldReduceMotion = useReducedMotion() ?? false;
   const [headings, setHeadings] = useState<TOCItem[]>([]);
   const [activeId, setActiveId] = useState<string>("");
 
@@ -158,30 +159,36 @@ export function OnThisPage() {
         <h4 className="mb-4 text-sm font-semibold text-muted-foreground uppercase tracking-wider">
           On This Page
         </h4>
-        <nav className="flex flex-col gap-2 relative border-l border-border/50">
-          {headings.map((heading) => (
-            <a
-              key={heading.id}
-              href={`#${heading.id}`}
-              onClick={(e) => handleClick(heading.id, e)}
-              className={cn(
-                "block text-sm transition-colors pl-4 relative py-1",
-                heading.level === 3 && "pl-8",
-                activeId === heading.id
-                  ? "text-primary font-medium"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              {activeId === heading.id && (
-                <motion.div
-                  layoutId="toc-active"
-                  className="absolute -left-px top-0 bottom-0 w-[2px] bg-primary"
-                />
-              )}
-              {heading.title}
-            </a>
-          ))}
-        </nav>
+        <LazyMotion features={domAnimation}>
+          <nav className="flex flex-col gap-2 relative border-l border-border/50">
+            {headings.map((heading) => (
+              <a
+                key={heading.id}
+                href={`#${heading.id}`}
+                onClick={(e) => handleClick(heading.id, e)}
+                className={cn(
+                  "block text-sm transition-colors pl-4 relative py-1",
+                  heading.level === 3 && "pl-8",
+                  activeId === heading.id
+                    ? "text-primary font-medium"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                {activeId === heading.id &&
+                  (shouldReduceMotion ? (
+                    <div className="absolute -left-px top-0 bottom-0 w-[2px] bg-primary" />
+                  ) : (
+                    <m.div
+                      layoutId="toc-active"
+                      transition={{ duration: 0.2 }}
+                      className="absolute -left-px top-0 bottom-0 w-[2px] bg-primary"
+                    />
+                  ))}
+                {heading.title}
+              </a>
+            ))}
+          </nav>
+        </LazyMotion>
       </div>
     </div>
   );

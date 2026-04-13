@@ -3,8 +3,14 @@ import Google from "next-auth/providers/google";
 
 // Allowed email domains
 const ALLOWED_DOMAINS = ["hireable.ph", "carislemedia.com"];
+const authSecret =
+  process.env.AUTH_SECRET ??
+  process.env.NEXTAUTH_SECRET ??
+  (process.env.NODE_ENV !== "production" ? "carisle-media-dev-secret-change-me" : undefined);
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  trustHost: true,
+  secret: authSecret,
   providers: [
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID!,
