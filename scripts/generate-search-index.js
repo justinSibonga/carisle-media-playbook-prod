@@ -2,10 +2,11 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT_DIR = path.resolve(__dirname, '..');
-const APP_DIR = path.join(ROOT_DIR, 'app');
-const COMPONENTS_DIR = path.join(ROOT_DIR, 'components');
-const OUTPUT_FILE = path.join(ROOT_DIR, 'lib', 'search-index.ts');
-const NAVIGATION_FILE = path.join(ROOT_DIR, 'lib', 'navigation.ts');
+const SRC_DIR = path.join(ROOT_DIR, 'src');
+const APP_DIR = path.join(SRC_DIR, 'app');
+const COMPONENTS_DIR = path.join(SRC_DIR, 'components');
+const OUTPUT_FILE = path.join(SRC_DIR, 'lib', 'search-index.ts');
+const NAVIGATION_FILE = path.join(SRC_DIR, 'lib', 'navigation.ts');
 
 // Helper to recursively find files
 function getFiles(dir) {
@@ -37,19 +38,32 @@ function cleanText(text) {
     .trim();
 }
 
-// Helper to resolve component imports
+// Helper to resolve component imports. Handles nested paths like
+// "@/components/playbook/raci-chart/raci-chart-section" and files that live
+// at <path>.tsx or <path>/index.tsx.
 function resolveComponentContent(fileContent) {
   let content = fileContent;
-  const importRegex = /import\s+.*?from\s+"@\/components\/(.*?)"/g;
+  const importRegex = /import\s+.*?from\s+["']@\/components\/(.*?)["']/g;
+  const seen = new Set();
   let match;
 
   while ((match = importRegex.exec(fileContent)) !== null) {
-    const componentName = match[1];
-    const componentPath = path.join(COMPONENTS_DIR, `${componentName}.tsx`);
-    
-    if (fs.existsSync(componentPath)) {
-      const componentContent = fs.readFileSync(componentPath, 'utf-8');
-      content += '\n' + componentContent;
+    const rel = match[1];
+    if (seen.has(rel)) continue;
+    seen.add(rel);
+
+    const candidates = [
+      path.join(COMPONENTS_DIR, `${rel}.tsx`),
+      path.join(COMPONENTS_DIR, `${rel}.ts`),
+      path.join(COMPONENTS_DIR, rel, 'index.tsx'),
+      path.join(COMPONENTS_DIR, rel, 'index.ts'),
+    ];
+
+    for (const candidate of candidates) {
+      if (fs.existsSync(candidate)) {
+        content += '\n' + fs.readFileSync(candidate, 'utf-8');
+        break;
+      }
     }
   }
   return content;

@@ -292,11 +292,12 @@ function UserProfile({ id }: { id: string }) {
 
 ## Magic Numbers / Constants
 
-Avoid hardcoded numeric values. Use named constants from `@/lib/constants`:
+Avoid hardcoded numeric values. Use named constants from `@/constants/*`:
 
 ```tsx
 // ✅ Correct - use named constants
-import { ICON_SIZE, TIMING, RACI_COLUMN_WIDTH } from '@/lib/constants';
+import { ICON_SIZE, TIMING } from '@/constants/ui';
+import { RACI_COLUMN_WIDTH } from '@/constants/raci';
 
 <HugeiconsIcon icon={AlertIcon} size={ICON_SIZE.XL} />
 setTimeout(() => setVisible(false), TIMING.TOAST_DURATION);
@@ -308,7 +309,7 @@ setTimeout(() => setVisible(false), 2000);
 <td style={{ width: '200px' }}>...</td>
 ```
 
-### Available Constants (`lib/constants.ts`)
+### Available Constants (`src/constants/ui.ts`, `src/constants/raci.ts`)
 
 | Category            | Constants                                                                               |
 | ------------------- | --------------------------------------------------------------------------------------- |
